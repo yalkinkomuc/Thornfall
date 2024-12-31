@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 
-public class MeleeAction : BaseAction, ITargetVisualAction
+public class HeavyAttackAction : BaseAction, ITargetVisualAction
 {
-    [SerializeField] private int actionPointCost = 1;
+    [SerializeField] private int actionPointCost = 2; // Daha yüksek AP maliyeti
     [SerializeField] private float attackRange = 2f;
-    [SerializeField] private int damageAmount = 40;
+    [SerializeField] private int damageAmount = 60; // Daha yüksek hasar
     [SerializeField] private float stoppingDistance = 1f;
-    [SerializeField] private float hitForce = 10f;
+    [SerializeField] private float hitForce = 15f; // Daha güçlü itme kuvveti
     
     private Animator animator;
     private AnimationEventHandler animationEventHandler;
@@ -27,8 +27,15 @@ public class MeleeAction : BaseAction, ITargetVisualAction
 
     private void Start()
     {
-        animationEventHandler.OnAttackCompleted += AnimationEventHandler_OnAttackCompleted;
-        animationEventHandler.OnMeleeHit += AnimationEventHandler_OnMeleeHit;
+        if (animationEventHandler != null)
+        {
+            animationEventHandler.OnAttackCompleted += AnimationEventHandler_OnAttackCompleted;
+            animationEventHandler.OnMeleeHit += AnimationEventHandler_OnMeleeHit;
+        }
+        else
+        {
+            Debug.LogError("AnimationEventHandler is missing on " + gameObject.name);
+        }
     }
 
     private void OnDestroy()
@@ -54,8 +61,9 @@ public class MeleeAction : BaseAction, ITargetVisualAction
             {
                 float pathLength = CalculatePathLength(path.corners);
                 float maxMoveRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
+                float effectiveRange = attackRange + stoppingDistance;
 
-                if (pathLength <= maxMoveRange + attackRange)
+                if (pathLength <= maxMoveRange + effectiveRange)
                 {
                     validTargets.Add(potentialTarget);
                 }
@@ -85,6 +93,8 @@ public class MeleeAction : BaseAction, ITargetVisualAction
         ActionStart(onActionComplete);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
+
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue))
         {
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit clickedUnit))
@@ -92,6 +102,7 @@ public class MeleeAction : BaseAction, ITargetVisualAction
                 if (clickedUnit.IsEnemy())
                 {
                     targetUnit = clickedUnit;
+                    Debug.DrawLine(transform.position, targetUnit.transform.position, Color.green, 2f);
                 }
             }
         }
@@ -103,8 +114,10 @@ public class MeleeAction : BaseAction, ITargetVisualAction
         }
 
         float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
+        float effectiveRange = attackRange + stoppingDistance;
+        Debug.Log($"Distance to target: {distanceToTarget}, Effective Range: {effectiveRange}");
 
-        if (distanceToTarget <= attackRange)
+        if (distanceToTarget <= effectiveRange)
         {
             isAttacking = true;
             StartAttack();
@@ -116,7 +129,7 @@ public class MeleeAction : BaseAction, ITargetVisualAction
             
             moveAction.TakeAction(targetPos, () => {
                 float finalDistance = Vector3.Distance(transform.position, targetUnit.transform.position);
-                if (finalDistance <= attackRange)
+                if (finalDistance <= effectiveRange)
                 {
                     isAttacking = true;
                     StartAttack();
@@ -133,14 +146,16 @@ public class MeleeAction : BaseAction, ITargetVisualAction
     {
         Vector3 targetDirection = (targetUnit.transform.position - transform.position).normalized;
         transform.forward = targetDirection;
-
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("HeavyAttack"); // Farklı animasyon trigger'ı
     }
 
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
     {
         isAttacking = false;
-        ActionComplete();
+        if (isActive)
+        {
+            ActionComplete();
+        }
     }
 
     private void AnimationEventHandler_OnMeleeHit(object sender, EventArgs e)
@@ -165,7 +180,7 @@ public class MeleeAction : BaseAction, ITargetVisualAction
 
     public override string GetActionName()
     {
-        return "Melee";
+        return "Heavy Attack";
     }
 
     public bool ShouldShowTargetVisual(Unit targetUnit)

@@ -34,8 +34,15 @@ public abstract class BaseAction : MonoBehaviour
 
     protected void ActionComplete()
     {
+        if (!isActive) return; // Zaten aktif değilse dön
+
         isActive = false;
-        onActionComplete();
+        if (onActionComplete != null)
+        {
+            var callback = onActionComplete;
+            onActionComplete = null;
+            callback();
+        }
     }
 
 

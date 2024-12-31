@@ -2093,6 +2093,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7244654941501216966, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
+      propertyPath: attackRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7244654941501216966, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
+      propertyPath: stoppingDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269667727850119495, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
+      propertyPath: actionPoints
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5331,10 +5343,10 @@ SceneRoots:
   - {fileID: 60437231}
   - {fileID: 1005009973}
   - {fileID: 123261434}
+  - {fileID: 812441205}
   - {fileID: 725013025}
   - {fileID: 460365937}
   - {fileID: 183478757}
-  - {fileID: 812441205}
   - {fileID: 1084948288}
   - {fileID: 372522223}
   - {fileID: 470971515}
