@@ -5,7 +5,7 @@ public class ArrowProjectile : MonoBehaviour
 {
     private Vector3 targetPosition;
     private Unit targetUnit;
-    [SerializeField] private float movementSpeed = 10f;
+    [SerializeField] private float movementSpeed = 20f;
 
     public event EventHandler<OnArrowHitEventArgs> OnArrowHit;
 
@@ -18,6 +18,8 @@ public class ArrowProjectile : MonoBehaviour
     {
         this.targetPosition = targetPosition;
         this.targetUnit = targetUnit;
+
+        transform.rotation *= Quaternion.Euler(90f, 0f, 0f);
     }
 
     private void Update()
@@ -31,11 +33,7 @@ public class ArrowProjectile : MonoBehaviour
 
         if (distanceBeforeMoving < distanceAfterMoving)
         {
-            // Hedefe ulaştık
-            OnArrowHit?.Invoke(this, new OnArrowHitEventArgs { 
-                targetUnit = targetUnit 
-            });
-            
+            OnArrowHit?.Invoke(this, new OnArrowHitEventArgs { targetUnit = targetUnit });
             Destroy(gameObject);
         }
     }

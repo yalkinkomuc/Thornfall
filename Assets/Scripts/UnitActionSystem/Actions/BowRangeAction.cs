@@ -11,6 +11,7 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
     [SerializeField] private float aimDuration = 1;
     [SerializeField] private int damageAmount = 10;
     [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private Transform shootPoint;
 
     private State state;
     private float stateTimer;
@@ -202,5 +203,35 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
         // GetValidTargetList yerine GetValidTargetListWithSphere kullanıyoruz
         List<Unit> validTargets = GetValidTargetListWithSphere(bowRange);
         return validTargets.Contains(targetUnit);
+    }
+
+    private void AnimationEventHandler_OnReloadCompleted(object sender, EventArgs e)
+    {
+        if (!canShootArrow) return;
+        
+        if (targetUnit != null)
+        {
+            // Ok'un yönünü hedef yönüne çevir
+            Vector3 aimDir = (targetUnit.transform.position - shootPoint.position).normalized;
+            Quaternion arrowRotation = Quaternion.LookRotation(aimDir);
+            
+            // Ok'u doğru rotasyonla spawn et
+            GameObject arrowObject = Instantiate(arrowPrefab, shootPoint.position, arrowRotation);
+            ArrowProjectile arrowProjectile = arrowObject.GetComponent<ArrowProjectile>();
+            
+            Vector3 targetPosition = targetUnit.transform.position;
+            targetPosition.y = shootPoint.position.y;
+            
+            arrowProjectile.Setup(targetPosition, targetUnit);
+            arrowProjectile.OnArrowHit += ArrowProjectile_OnHit;
+            
+            OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs 
+            { 
+                shootingUnit = unit,
+                targetUnit = targetUnit 
+            });
+        }
+        
+        canShootArrow = false;
     }
 }

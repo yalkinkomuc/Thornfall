@@ -6,6 +6,7 @@ public class AnimationEventHandler : MonoBehaviour
     public event EventHandler OnAttackCompleted;
     public event EventHandler OnReloadCompleted;
     public event EventHandler OnMeleeHit;
+    public event EventHandler OnAimShot;
     // Diğer animation event'leri için yeni event'ler eklenebilir...
 
     // Animation Event'ler tarafından çağrılacak methodlar
@@ -25,5 +26,10 @@ public class AnimationEventHandler : MonoBehaviour
     {
         Debug.Log("Melee Hit Event Triggered");
         OnMeleeHit?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void AimShot()
+    {
+        OnAimShot?.Invoke(this, EventArgs.Empty);
     }
 } 

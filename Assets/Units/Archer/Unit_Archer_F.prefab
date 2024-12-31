@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 8930565866926077178}
   - component: {fileID: 7126542116238606873}
   - component: {fileID: 1492721841236850015}
-  - component: {fileID: 6798320515437877247}
+  - component: {fileID: 6690582999288276869}
   m_Layer: 8
   m_Name: Unit_Archer_F
   m_TagString: Untagged
@@ -560,7 +560,8 @@ MonoBehaviour:
   aimDuration: 1
   damageAmount: 100
   arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
---- !u!114 &6798320515437877247
+  shootPoint: {fileID: 1228487206976992562}
+--- !u!114 &6690582999288276869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -569,13 +570,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4969305086794659215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697cacd43589db34695ecfe0d4f03dce, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e1daa9185953df43baadb74a846e97c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   whatIsUnit:
     serializedVersion: 2
     m_Bits: 256
-  actionPointCost: 2
+  actionPointCost: 3
+  bowRange: 50
+  damageAmount: 30
+  arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
+  shootPoint: {fileID: 1228487206976992562}
 --- !u!1 &6086575907250784225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,6 +1638,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 429167651815117660, guid: be693608a3c1e6c4e9efb294376c0eef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9035853813369840075}
+    - targetCorrespondingSourceObject: {fileID: 429167651815117660, guid: be693608a3c1e6c4e9efb294376c0eef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8022964819006995882}
   m_SourcePrefab: {fileID: 100100000, guid: be693608a3c1e6c4e9efb294376c0eef, type: 3}
 --- !u!4 &1219612653736252814 stripped
 Transform:
@@ -1676,3 +1684,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8022964819006995882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3247263269823398451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba70b3f661b4cb243805af994575812a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

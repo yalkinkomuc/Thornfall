@@ -49,8 +49,44 @@ public class UnitActionSystem : MonoBehaviour
 
    private void Start()
    {
-      SetSelectedUnit(selectedUnit);
+      // Eğer seçili unit yoksa veya sahnede değilse
+      if (selectedUnit == null || !selectedUnit.gameObject.activeInHierarchy)
+      {
+         Unit[] allUnits = FindObjectsByType<Unit>(FindObjectsSortMode.None);
+         List<Unit> allyUnits = new List<Unit>();
+         
+         foreach (Unit unit in allUnits)
+         {
+            if (!unit.IsEnemy() && unit.gameObject.activeInHierarchy)
+            {
+               allyUnits.Add(unit);
+            }
+         }
+         
+         if (allyUnits.Count > 0)
+         {
+            selectedUnit = allyUnits[UnityEngine.Random.Range(0, allyUnits.Count)];
+            SetSelectedUnit(selectedUnit);
+         }
+         else
+         {
+            Debug.LogWarning("No active ally units found in scene!");
+         }
+      }
+
       TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+
+      // AimArrowAction event'lerini dinle
+      Unit[] unitsWithAimArrow = FindObjectsByType<Unit>(FindObjectsSortMode.None);
+      foreach (Unit unit in unitsWithAimArrow)
+      {
+         AimArrowAction aimArrowAction = unit.GetComponent<AimArrowAction>();
+         if (aimArrowAction != null)
+         {
+            aimArrowAction.OnShootAnimStarted += AimArrowAction_OnShootAnimStarted;
+            aimArrowAction.OnShootCompleted += AimArrowAction_OnShootCompleted;
+         }
+      }
    }
 
    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
@@ -221,6 +257,16 @@ public class UnitActionSystem : MonoBehaviour
    {
       isBusy = false;
       OnBusyChanged?.Invoke(this, isBusy);
+   }
+
+   private void AimArrowAction_OnShootAnimStarted(object sender, EventArgs e)
+   {
+      SetBusy();
+   }
+
+   private void AimArrowAction_OnShootCompleted(object sender, EventArgs e)
+   {
+      ClearBusy();
    }
 
    #endregion
