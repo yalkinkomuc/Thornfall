@@ -12,6 +12,7 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
     [SerializeField] private int damageAmount = 10;
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private Transform shootPoint;
+    [SerializeField] private int actionPointsCost = 2;
 
     private State state;
     private float stateTimer;
@@ -157,7 +158,7 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
             return 0; 
         }
         
-        return 3;
+        return actionPointsCost;
     }
 
     public override List<Unit> GetValidTargetListWithSphere(float radius)

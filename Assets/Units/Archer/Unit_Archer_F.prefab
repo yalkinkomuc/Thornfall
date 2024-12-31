@@ -418,7 +418,7 @@ MonoBehaviour:
   actionPoints: 5
   teamID: 1
   isEnemy: 0
-  maxActionPoints: 5
+  maxActionPoints: 10
 --- !u!65 &4495752159656540321
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -561,6 +561,7 @@ MonoBehaviour:
   damageAmount: 100
   arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
   shootPoint: {fileID: 1228487206976992562}
+  actionPointsCost: 2
 --- !u!114 &6690582999288276869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,7 +579,7 @@ MonoBehaviour:
     m_Bits: 256
   actionPointCost: 3
   bowRange: 50
-  damageAmount: 30
+  damageAmount: 100
   arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
   shootPoint: {fileID: 1228487206976992562}
 --- !u!1 &6086575907250784225

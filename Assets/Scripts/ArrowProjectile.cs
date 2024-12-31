@@ -9,6 +9,14 @@ public class ArrowProjectile : MonoBehaviour
 
     public event EventHandler<OnArrowHitEventArgs> OnArrowHit;
 
+
+    private void Start()
+    {
+       Vector3 moveDirection = (targetPosition - transform.position).normalized;
+        transform.forward = moveDirection;
+    }
+
+
     public class OnArrowHitEventArgs : EventArgs
     {
         public Unit targetUnit;
