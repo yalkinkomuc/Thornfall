@@ -27,7 +27,8 @@ public class MoveAction : BaseAction
 
     private Vector3 lastPosition;
     private float stuckTime = 0f;
-    private float stuckThreshold = 0.5f; // 0.5 saniye hareketsiz kalırsa stuck kabul et
+    private float stuckThreshold = 0.5f;
+    private float stuckTimer = 0f;
 
     protected override void Awake()
     {
@@ -68,7 +69,7 @@ public class MoveAction : BaseAction
         }
 
         ActionStart(onActionComplete);
-        StuckTimer = 0f;
+        stuckTimer = 0f;
 
         NavMeshPath path = new NavMeshPath();
         if (agent.CalculatePath(targetPoint, path))
@@ -153,15 +154,13 @@ public class MoveAction : BaseAction
         }
     }
 
-    private float StuckTimer = 0f;
-
     private void StopMoving()
     {
         if (agent != null)
         {
             agent.ResetPath();
             agent.velocity = Vector3.zero;
-            StuckTimer = 0f;
+            stuckTimer = 0f;
         }
         
         OnStopMoving?.Invoke(this, EventArgs.Empty);

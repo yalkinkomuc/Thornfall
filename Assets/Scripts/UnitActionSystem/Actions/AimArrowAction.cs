@@ -120,8 +120,10 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
         return actionPointCost;
     }
 
-    public bool ShouldShowTargetVisual(Unit targetUnit)
+    public override bool ShouldShowTargetVisual(Unit targetUnit)
     {
+        if (!base.ShouldShowTargetVisual(targetUnit)) return false;
+        
         List<Unit> validTargets = GetValidTargetListWithSphere(bowRange);
         return validTargets.Contains(targetUnit);
     }

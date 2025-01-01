@@ -183,8 +183,10 @@ public class HeavyAttackAction : BaseAction, ITargetVisualAction
         return "Heavy Attack";
     }
 
-    public bool ShouldShowTargetVisual(Unit targetUnit)
+    public override bool ShouldShowTargetVisual(Unit targetUnit)
     {
+        if (!base.ShouldShowTargetVisual(targetUnit)) return false;
+        
         List<Unit> validTargets = GetValidTargetListWithSphere(attackRange);
         return validTargets.Contains(targetUnit);
     }

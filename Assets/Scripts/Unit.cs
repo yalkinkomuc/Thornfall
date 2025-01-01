@@ -41,11 +41,16 @@ public class Unit : MonoBehaviour
 
     private BaseAction defaultCombatAction;
 
+    [SerializeField] private GameObject damageTextPrefab; // Unity Inspector'da atanacak
+
     private void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
         moveAction = GetComponent<MoveAction>();
         baseActionArray = GetComponents<BaseAction>();
+        
+        // Event'i dinle
+        healthSystem.OnDamageTaken += HealthSystem_OnDamageTaken;
         
         // Varsayılan combat action'ı belirle
         foreach (BaseAction action in baseActionArray)
@@ -154,6 +159,20 @@ public class Unit : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void HealthSystem_OnDamageTaken(object sender, HealthSystem.OnDamageTakenEventArgs e)
+    {
+        // Artık burada bir şey yapmamıza gerek yok
+        // DamageTextAnimation kendi eventini dinliyor
+    }
+
+    private void OnDestroy()
+    {
+        if (healthSystem != null)
+        {
+            healthSystem.OnDamageTaken -= HealthSystem_OnDamageTaken;
+        }
+    }
+
     #endregion
 
     public bool IsEnemy()
@@ -163,9 +182,8 @@ public class Unit : MonoBehaviour
 
     public void Damage(int damageAmount)
     {
+        // Sadece HealthSystem'e hasar ver, geri kalanını event halledecek
         healthSystem.Damage(damageAmount);
-        Debug.Log(transform+"Damage");
-        
     }
 
     public Vector3 GetUnitWorldPosition()

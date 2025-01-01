@@ -504,30 +504,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit_Archer_F
       objectReference: {fileID: 0}
-    - target: {fileID: 7126542116238606873, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
-      propertyPath: moveSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930565866926077178, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
-      propertyPath: rangeColor.a
-      value: 0.015686275
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930565866926077178, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
-      propertyPath: rangeColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930565866926077178, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
-      propertyPath: rangeColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930565866926077178, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
-      propertyPath: rangeColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930565866926077178, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
-      propertyPath: rangeVisualizerHeight
-      value: 0.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1662,10 +1638,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4956407485921440376, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
-      propertyPath: moveSpeed
-      value: 8
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2034,9 +2006,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Archer_F
       objectReference: {fileID: 0}
-    - target: {fileID: 4474081211127299335, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
-      propertyPath: health
-      value: 1000
+    - target: {fileID: 2574583183658055300, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2458,9 +2430,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Archer_F (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 4474081211127299335, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
-      propertyPath: health
-      value: 1000
+    - target: {fileID: 2574583183658055300, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4635,18 +4607,6 @@ PrefabInstance:
     - target: {fileID: 3330294908778982266, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_Name
       value: Unit_Berserker_M
-      objectReference: {fileID: 0}
-    - target: {fileID: 4369069900184805792, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5214319809565362510, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5689067435337903955, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6702310149379904535, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_LocalPosition.x
