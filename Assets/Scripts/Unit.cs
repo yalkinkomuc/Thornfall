@@ -39,11 +39,31 @@ public class Unit : MonoBehaviour
     
     [SerializeField] private int maxActionPoints = 5;
 
+    private BaseAction defaultCombatAction;
+
     private void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
         moveAction = GetComponent<MoveAction>();
-        baseActionArray = GetComponents<BaseAction>(); 
+        baseActionArray = GetComponents<BaseAction>();
+        
+        // Varsayılan combat action'ı belirle
+        foreach (BaseAction action in baseActionArray)
+        {
+            if (action.IsCombatAction())
+            {
+                if (action is BowRangeAction && !IsEnemy())  // Archer için
+                {
+                    defaultCombatAction = action;
+                    break;
+                }
+                else if (action is MeleeAction && !IsEnemy())  // Knight için
+                {
+                    defaultCombatAction = action;
+                    break;
+                }
+            }
+        }
     }
 
     private void Start()
@@ -153,4 +173,8 @@ public class Unit : MonoBehaviour
        return transform.position;     
     }
     
+    public BaseAction GetDefaultCombatAction()
+    {
+        return defaultCombatAction;
+    }
 }

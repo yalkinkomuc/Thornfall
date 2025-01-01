@@ -9,6 +9,7 @@ public abstract class BaseAction : MonoBehaviour
     protected Action onActionComplete;
 
     [SerializeField] protected LayerMask whatIsUnit;
+    [SerializeField] protected bool isCombatAction = false;  // Combat action mu?
     
     protected virtual void Awake()
     {
@@ -123,4 +124,5 @@ public abstract class BaseAction : MonoBehaviour
 
   
     
+    public bool IsCombatAction() => isCombatAction;
 }

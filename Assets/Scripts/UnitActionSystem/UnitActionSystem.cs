@@ -13,7 +13,7 @@ public class UnitActionSystem : MonoBehaviour
    
    private bool isBusy;
    
-   private MovementRangeVisualizer currentRangeVisualizer;
+   
    private MoveAction currentMoveAction;
    
    #region EventHandlers
@@ -113,25 +113,34 @@ public class UnitActionSystem : MonoBehaviour
 
       Vector3 mousePosition = MouseWorld.GetMouseWorldPosition();
 
+      // Mouse pozisyonunda düşman var mı kontrol et
+      bool isOverEnemy = false;
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+      if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
+      {
+         if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
+         {
+            isOverEnemy = true;
+            // Düşman üzerindeyken varsayılan combat action'ı seç
+            if (selectedUnit != null && selectedUnit.GetDefaultCombatAction() != null)
+            {
+               SetSelectedAction(selectedUnit.GetDefaultCombatAction());
+            }
+         }
+      }
+
+      // Düşman üzerinde değilse ve combat action seçiliyse MoveAction'a geri dön
+      if (!isOverEnemy && selectedAction != null && selectedAction.IsCombatAction())
+      {
+         SetSelectedAction(selectedUnit.GetMoveAction());
+      }
+
       // Move Action path gösterimi
       if (selectedAction is MoveAction moveAction)
       {
          moveAction.ShowPath(mousePosition);
-         
-         if (currentRangeVisualizer == null)
-         {
-            currentRangeVisualizer = selectedUnit.GetComponent<MovementRangeVisualizer>();
-            if (currentRangeVisualizer == null)
-            {
-               currentRangeVisualizer = selectedUnit.gameObject.AddComponent<MovementRangeVisualizer>();
-            }
-         }
-         
-         float maxRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
-         currentRangeVisualizer.ShowRange(maxRange);
       }
-      // Melee Action için ShowPath'i kaldırdık çünkü artık NavMesh kullanıyoruz
-      
+
       if (Input.GetMouseButtonDown(0))
       {
          if (TryHandleUnitSelection())
@@ -151,51 +160,41 @@ public class UnitActionSystem : MonoBehaviour
          return;
       }
 
-      // Eğer MeleeAction ise ve yapılamıyorsa, busy state'e geçme
-      if (selectedAction is MeleeAction meleeAction)
+      // Eğer MoveAction seçiliyken düşmana tıklandıysa
+      if (selectedAction is MoveAction)
       {
-         // Mouse pozisyonundaki hedefi bul
          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
          if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
          {
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
             {
-               // Hedefin geçerli olup olmadığını kontrol et
-               List<Unit> validTargets = meleeAction.GetValidTargetListWithSphere(
-                   meleeAction.GetAttackRange() + 
-                   selectedUnit.GetMoveAction().GetMaxMovementPoints() / 
-                   selectedUnit.GetMoveAction().GetMovementCostPerUnit()
-               );
-
-               if (!validTargets.Contains(targetUnit))
+               BaseAction combatAction = selectedUnit.GetDefaultCombatAction();
+               if (combatAction != null)
                {
-                   return; // Hedef menzil dışında
+                  // Önce hareket et, sonra saldır
+                  MoveAction moveAction = selectedUnit.GetMoveAction();
+                  Vector3 targetPosition = targetUnit.transform.position;
+
+                  SetBusy();
+                  moveAction.TakeAction(targetPosition, () => {
+                     // Hareket bittikten sonra combat action'ı uygula
+                     if (selectedUnit.TrySpendActionPointsToTakeAction(combatAction))
+                     {
+                        combatAction.TakeAction(targetPosition, ClearBusy);
+                     }
+                     else
+                     {
+                        ClearBusy();
+                     }
+                  });
+                  OnActionStarted?.Invoke(this, EventArgs.Empty);
+                  return;
                }
-
-               float distanceToTarget = Vector3.Distance(selectedUnit.transform.position, targetUnit.transform.position);
-               bool canExecuteAction = distanceToTarget <= meleeAction.GetAttackRange() || 
-                                     selectedUnit.GetMoveAction().GetCurrentMovementPoints() > 0;
-
-               if (!canExecuteAction)
-               {
-                   return;
-               }
-
-               if (!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
-               {
-                   return;
-               }
-
-               SetBusy();
-               selectedAction.TakeAction(targetUnit.transform.position, ClearBusy);
-               OnActionStarted?.Invoke(this, EventArgs.Empty);
-               return;
             }
          }
-         return; // Geçerli hedef bulunamadı
       }
 
-      // Diğer action'lar için normal işlem
+      // Normal action handling
       if (!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
       {
          return;
@@ -296,10 +295,7 @@ public class UnitActionSystem : MonoBehaviour
          {
             currentMoveAction.HidePath();
          }
-         if (currentRangeVisualizer != null)
-         {
-            currentRangeVisualizer.HideRange();
-         }
+        
       }
 
       // Yeni unit'i seç
@@ -321,15 +317,11 @@ public class UnitActionSystem : MonoBehaviour
          currentMoveAction = moveAction;
          
          // Range visualizer'ı kontrol et ve yoksa ekle
-         currentRangeVisualizer = selectedUnit.GetComponent<MovementRangeVisualizer>();
-         if (currentRangeVisualizer == null)
-         {
-            currentRangeVisualizer = selectedUnit.gameObject.AddComponent<MovementRangeVisualizer>();
-         }
+        
 
          // Gerçek hareket mesafesini kullan
          float actualRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
-         currentRangeVisualizer.ShowRange(actualRange);
+         
       }
       else
       {
@@ -338,10 +330,7 @@ public class UnitActionSystem : MonoBehaviour
          {
             currentMoveAction.HidePath();
          }
-         if (currentRangeVisualizer != null)
-         {
-            currentRangeVisualizer.HideRange();
-         }
+        
       }
 
       OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
