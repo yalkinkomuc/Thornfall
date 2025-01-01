@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
+using System.Linq;
 // ReSharper disable All
 
 public class UnitActionSystem : MonoBehaviour
@@ -171,16 +173,13 @@ public class UnitActionSystem : MonoBehaviour
                BaseAction combatAction = selectedUnit.GetDefaultCombatAction();
                if (combatAction != null)
                {
-                  // Önce hareket et, sonra saldır
-                  MoveAction moveAction = selectedUnit.GetMoveAction();
-                  Vector3 targetPosition = targetUnit.transform.position;
-
+                  // MeleeAction için normal hareket
                   SetBusy();
-                  moveAction.TakeAction(targetPosition, () => {
-                     // Hareket bittikten sonra combat action'ı uygula
+                  MoveAction moveAction = selectedUnit.GetMoveAction();
+                  moveAction.TakeAction(targetUnit.transform.position, () => {
                      if (selectedUnit.TrySpendActionPointsToTakeAction(combatAction))
                      {
-                        combatAction.TakeAction(targetPosition, ClearBusy);
+                        combatAction.TakeAction(targetUnit.transform.position, ClearBusy);
                      }
                      else
                      {
@@ -239,6 +238,74 @@ public class UnitActionSystem : MonoBehaviour
       return false;
    }
 
+   private Vector3 FindBestShootPosition(Unit targetUnit, float maxRange)
+   {
+      const int SAMPLE_COUNT = 8; // Çevrede kontrol edilecek nokta sayısı
+      float currentRange = maxRange * 0.7f; // Optimal mesafe (max menzilden biraz kısa)
+      
+      // Önce mevcut pozisyondan görüş var mı kontrol et
+      Vector3 directionToTarget = (targetUnit.transform.position - selectedUnit.transform.position).normalized;
+      if (!Physics.Raycast(selectedUnit.transform.position, directionToTarget, out RaycastHit initialHit, maxRange) ||
+          initialHit.transform.GetComponent<Unit>() == targetUnit)
+      {
+          return selectedUnit.transform.position; // Mevcut pozisyon uygunsa hareket etme
+      }
+
+      // Hedefin etrafında noktalar kontrol et
+      List<(Vector3 position, float distance)> validPositions = new List<(Vector3, float)>();
+      
+      for (int i = 0; i < SAMPLE_COUNT; i++)
+      {
+          float angle = i * (360f / SAMPLE_COUNT);
+          Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+          Vector3 potentialPosition = targetUnit.transform.position + direction * currentRange;
+
+          // NavMesh üzerinde geçerli bir nokta bul
+          if (NavMesh.SamplePosition(potentialPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+          {
+              // Hedef görüş hattında mı kontrol et
+              directionToTarget = (targetUnit.transform.position - hit.position).normalized;
+              if (!Physics.Raycast(hit.position, directionToTarget, out RaycastHit raycastHit, currentRange) ||
+                  raycastHit.transform.GetComponent<Unit>() == targetUnit)
+              {
+                  // Geçerli pozisyonu ve mevcut pozisyona olan mesafeyi kaydet
+                  float distanceFromCurrent = Vector3.Distance(hit.position, selectedUnit.transform.position);
+                  validPositions.Add((hit.position, distanceFromCurrent));
+              }
+          }
+      }
+
+      // Eğer geçerli pozisyon bulunamadıysa, daha geniş bir alanda ara
+      if (validPositions.Count == 0)
+      {
+          currentRange = maxRange; // Maksimum menzili kullan
+          for (int i = 0; i < SAMPLE_COUNT; i++)
+          {
+              float angle = i * (360f / SAMPLE_COUNT);
+              Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+              Vector3 potentialPosition = targetUnit.transform.position + direction * currentRange;
+
+              if (NavMesh.SamplePosition(potentialPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+              {
+                  directionToTarget = (targetUnit.transform.position - hit.position).normalized;
+                  if (!Physics.Raycast(hit.position, directionToTarget, out RaycastHit raycastHit, currentRange) ||
+                      raycastHit.transform.GetComponent<Unit>() == targetUnit)
+                  {
+                      float distanceFromCurrent = Vector3.Distance(hit.position, selectedUnit.transform.position);
+                      validPositions.Add((hit.position, distanceFromCurrent));
+                  }
+              }
+          }
+      }
+
+      // En yakın geçerli pozisyonu seç
+      if (validPositions.Count > 0)
+      {
+          return validPositions.OrderBy(x => x.distance).First().position;
+      }
+
+      return Vector3.zero; // Hiçbir uygun pozisyon bulunamadı
+   }
 
    
    

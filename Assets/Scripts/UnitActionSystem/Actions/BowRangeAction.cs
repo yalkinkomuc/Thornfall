@@ -199,9 +199,12 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
         return bowRange;
     }
 
-    public bool ShouldShowTargetVisual(Unit targetUnit)
+    public override bool ShouldShowTargetVisual(Unit targetUnit)
     {
-        // GetValidTargetList yerine GetValidTargetListWithSphere kullanıyoruz
+        // Önce base'in kontrolünü yap (mouse üzerinde mi?)
+        if (!base.ShouldShowTargetVisual(targetUnit)) return false;
+        
+        // Sonra menzil kontrolü yap
         List<Unit> validTargets = GetValidTargetListWithSphere(bowRange);
         return validTargets.Contains(targetUnit);
     }

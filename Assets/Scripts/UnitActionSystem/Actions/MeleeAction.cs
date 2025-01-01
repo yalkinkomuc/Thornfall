@@ -168,8 +168,12 @@ public class MeleeAction : BaseAction, ITargetVisualAction
         return "Melee";
     }
 
-    public bool ShouldShowTargetVisual(Unit targetUnit)
+    public override bool ShouldShowTargetVisual(Unit targetUnit)
     {
+        // Önce base'in kontrolünü yap (mouse üzerinde mi?)
+        if (!base.ShouldShowTargetVisual(targetUnit)) return false;
+        
+        // Sonra menzil kontrolü yap
         List<Unit> validTargets = GetValidTargetListWithSphere(attackRange);
         return validTargets.Contains(targetUnit);
     }

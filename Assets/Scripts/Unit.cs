@@ -164,7 +164,7 @@ public class Unit : MonoBehaviour
     public void Damage(int damageAmount)
     {
         healthSystem.Damage(damageAmount);
-        //Debug.Log(transform+"Damage");
+        Debug.Log(transform+"Damage");
         
     }
 

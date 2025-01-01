@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseAction : MonoBehaviour
+public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
 {
     protected Unit unit;
     protected bool isActive;
     protected Action onActionComplete;
 
     [SerializeField] protected LayerMask whatIsUnit;
-    [SerializeField] protected bool isCombatAction = false;  // Combat action mu?
+    [SerializeField] protected bool isCombatAction = false;
     
     protected virtual void Awake()
     {
@@ -125,4 +125,17 @@ public abstract class BaseAction : MonoBehaviour
   
     
     public bool IsCombatAction() => isCombatAction;
+
+    public virtual bool ShouldShowTargetVisual(Unit targetUnit)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue))
+        {
+            if (raycastHit.transform.TryGetComponent<Unit>(out Unit mouseOverUnit))
+            {
+                return mouseOverUnit == targetUnit;
+            }
+        }
+        return false;
+    }
 }
