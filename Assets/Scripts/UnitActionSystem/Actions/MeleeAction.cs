@@ -15,7 +15,7 @@ public class MeleeAction : BaseAction, ITargetVisualAction
     private AnimationEventHandler animationEventHandler;
     private Unit targetUnit;
     private MoveAction moveAction;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
 
     protected override void Awake()
     {

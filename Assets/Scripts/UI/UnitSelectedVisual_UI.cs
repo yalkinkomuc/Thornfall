@@ -36,12 +36,8 @@ public class UnitSelectedVisual_UI : MonoBehaviour
 
     private void Update()
     {
-        // Eğer BowAction seçiliyse her frame güncelle
-        BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
-        if (selectedAction is BowRangeAction)
-        {
-            UpdateVisual();
-        }
+        // Her frame'de güncelle
+        UpdateVisual();
     }
 
     private void UnitActionSystem_OnSelectedUnitChanged(object sender, EventArgs e)
@@ -84,7 +80,6 @@ public class UnitSelectedVisual_UI : MonoBehaviour
         if (selectedCircleMeshRenderer != null)
         {
             selectedCircleMeshRenderer.enabled = true;
-            //selectedCircleMeshRenderer.material.color = Color.green; 
         }
     }
 
@@ -93,7 +88,6 @@ public class UnitSelectedVisual_UI : MonoBehaviour
         if (selectedCircleMeshRenderer != null)
         {
             selectedCircleMeshRenderer.enabled = false; 
-            
         }
     }
 

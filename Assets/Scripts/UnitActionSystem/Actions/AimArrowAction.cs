@@ -15,6 +15,7 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
     private Animator animator;
     private AnimationEventHandler animationEventHandler;
     private bool canShootArrow;
+    public bool isAttacking = false;
 
     public event EventHandler OnShootAnimStarted;
     public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
@@ -51,6 +52,11 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
 
     public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
+        if (isAttacking)
+        {
+            return;
+        }
+
         targetUnit = GetValidTarget(bowRange);
         
         ActionStart(onActionComplete);

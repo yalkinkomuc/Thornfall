@@ -19,6 +19,7 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
     private Unit targetUnit;
     private bool canShootArrow;
     private float rotateSpeed = 10f;
+    public bool isAttacking = false;
 
     public event EventHandler OnShootAnimStarted;
     public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
@@ -130,8 +131,13 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
         ((ArrowProjectile)sender).OnArrowHit -= ArrowProjectile_OnHit;
     }
 
-    public override void TakeAction(Vector3 worldPosition, Action onActionComplete)
+    public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
+        if (isAttacking)
+        {
+            return; // Eğer zaten saldırıyorsak, yeni bir hedef seçme
+        }
+
         targetUnit = GetValidTarget(bowRange);
         
         // Önce ActionStart'ı çağır, sonra kontrolleri yap

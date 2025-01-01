@@ -115,26 +115,30 @@ public class UnitActionSystem : MonoBehaviour
 
       Vector3 mousePosition = MouseWorld.GetMouseWorldPosition();
 
-      // Mouse pozisyonunda düşman var mı kontrol et
-      bool isOverEnemy = false;
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
+      // Sadece MoveAction seçiliyken düşman kontrolü yap
+      if (selectedAction is MoveAction)
       {
-         if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
+         // Mouse pozisyonunda düşman var mı kontrol et
+         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
          {
-            isOverEnemy = true;
-            // Düşman üzerindeyken varsayılan combat action'ı seç
-            if (selectedUnit != null && selectedUnit.GetDefaultCombatAction() != null)
+            if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
             {
-               SetSelectedAction(selectedUnit.GetDefaultCombatAction());
+               // Düşman üzerindeyken varsayılan combat action'ı seç
+               if (selectedUnit != null && selectedUnit.GetDefaultCombatAction() != null)
+               {
+                  SetSelectedAction(selectedUnit.GetDefaultCombatAction());
+               }
+            }
+            else
+            {
+               // Düşman üzerinde değilken MoveAction'a geri dön
+               if (selectedUnit != null && selectedAction != selectedUnit.GetMoveAction())
+               {
+                  SetSelectedAction(selectedUnit.GetMoveAction());
+               }
             }
          }
-      }
-
-      // Düşman üzerinde değilse ve combat action seçiliyse MoveAction'a geri dön
-      if (!isOverEnemy && selectedAction != null && selectedAction.IsCombatAction())
-      {
-         SetSelectedAction(selectedUnit.GetMoveAction());
       }
 
       // Move Action path gösterimi
@@ -158,6 +162,27 @@ public class UnitActionSystem : MonoBehaviour
    private void HandleSelectedAction()
    {
       if (selectedUnit == null || selectedAction == null)
+      {
+         return;
+      }
+
+      // Eğer zaten bir hedef birimi varsa, yeni bir aksiyon alımına izin verme
+      if (selectedAction is MeleeAction meleeAction && meleeAction.isAttacking)
+      {
+         return;
+      }
+
+      if (selectedAction is BowRangeAction bowRangeAction && bowRangeAction.isAttacking)
+      {
+         return;
+      }
+
+      if (selectedAction is HeavyAttackAction heavyAttackAction && heavyAttackAction.isAttacking)
+      {
+         return;
+      }
+
+      if (selectedAction is AimArrowAction aimArrowAction && aimArrowAction.isAttacking)
       {
          return;
       }
