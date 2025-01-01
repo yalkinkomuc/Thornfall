@@ -535,10 +535,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   pathVisualizer: {fileID: 4015877083913336273}
-  stoppingDistance: 0.2
+  stoppingDistance: 0.5
   moveSpeed: 10
   rotationSpeed: 10
-  maxMovementPoints: 20000
+  maxMovementPoints: 500
   currentMovementPoints: 0
 --- !u!114 &1492721841236850015
 MonoBehaviour:

@@ -3676,7 +3676,6 @@ GameObject:
   - component: {fileID: 3784696515028165254}
   - component: {fileID: 5525194512031871807}
   - component: {fileID: 4956407485921440376}
-  - component: {fileID: 8288637284722595067}
   - component: {fileID: 6155907303035659887}
   - component: {fileID: 7244654941501216966}
   m_Layer: 8
@@ -3718,7 +3717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSystem: {fileID: 2783344228545320632}
-  actionPoints: 5
+  actionPoints: 50
   teamID: 1
   isEnemy: 0
   maxActionPoints: 5
@@ -3838,28 +3837,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   pathVisualizer: {fileID: 5393368184762173489}
-  stoppingDistance: 0.2
+  stoppingDistance: 0.5
   moveSpeed: 10
   rotationSpeed: 10
-  maxMovementPoints: 50000
+  maxMovementPoints: 500
   currentMovementPoints: 0
---- !u!114 &8288637284722595067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3348385889689452877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697cacd43589db34695ecfe0d4f03dce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whatIsUnit:
-    serializedVersion: 2
-    m_Bits: 256
-  actionPointCost: 0
-  restRange: 4
 --- !u!114 &6155907303035659887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3896,9 +3878,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   actionPointCost: 2
-  attackRange: 2
+  attackRange: 1
   damageAmount: 60
-  stoppingDistance: 1
+  stoppingDistance: 2
   hitForce: 15
 --- !u!1 &3372141301688510530
 GameObject:

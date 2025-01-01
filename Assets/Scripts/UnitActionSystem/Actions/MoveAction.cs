@@ -58,9 +58,10 @@ public class MoveAction : BaseAction
     {
         if (agent == null) return;
         
-        // Hareket puanı kontrolü
-        if (currentMovementPoints <= 0)
+        // Hareket puanı kontrolü - 0.6'dan küçükse hareket etme
+        if (currentMovementPoints < 0.6f)
         {
+            ActionStart(onActionComplete);
             ActionComplete();
             return;
         }
