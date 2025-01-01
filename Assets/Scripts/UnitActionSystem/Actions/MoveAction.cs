@@ -21,6 +21,7 @@ public class MoveAction : BaseAction
 
     public event EventHandler OnStartMoving;
     public event EventHandler OnStopMoving;
+    public event EventHandler OnMovementPointsChanged;
 
     private float turnSmoothVelocity;
 
@@ -103,6 +104,10 @@ public class MoveAction : BaseAction
 
         if (agent != null && agent.hasPath)
         {
+            // Normal hareket güncelleme
+            float distanceMoved = agent.velocity.magnitude * Time.deltaTime;
+            currentMovementPoints -= Mathf.CeilToInt(distanceMoved * movementCostPerUnit);
+
             // Stuck kontrolü - pozisyon değişmiyorsa
             if (Vector3.Distance(transform.position, lastPosition) < 0.01f)
             {
@@ -120,10 +125,6 @@ public class MoveAction : BaseAction
                 stuckTime = 0f;
             }
             lastPosition = transform.position;
-
-            // Normal hareket güncelleme
-            float distanceMoved = agent.velocity.magnitude * Time.deltaTime;
-            currentMovementPoints -= Mathf.CeilToInt(distanceMoved * movementCostPerUnit);
 
             if (agent.velocity.sqrMagnitude > 0.1f)
             {
@@ -164,6 +165,7 @@ public class MoveAction : BaseAction
         }
         
         OnStopMoving?.Invoke(this, EventArgs.Empty);
+        OnMovementPointsChanged?.Invoke(this, EventArgs.Empty);
         ActionComplete();
     }
 
@@ -252,5 +254,17 @@ public class MoveAction : BaseAction
     public NavMeshAgent GetAgent()
     {
         return agent;
+    }
+
+    public void SpendMovementPoints(float amount)
+    {
+        currentMovementPoints -= Mathf.RoundToInt(amount);
+        OnMovementPointsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ResetMovementPoints()
+    {
+        currentMovementPoints = maxMovementPoints;
+        OnMovementPointsChanged?.Invoke(this, EventArgs.Empty);
     }
 }

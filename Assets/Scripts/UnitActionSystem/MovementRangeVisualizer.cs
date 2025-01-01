@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class MovementRangeVisualizer : MonoBehaviour
 {
@@ -10,14 +11,18 @@ public class MovementRangeVisualizer : MonoBehaviour
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
+        if (moveAction == null)
+        {
+            Debug.LogError("MoveAction component not found on " + gameObject.name);
+        }
         CreateRangeMesh();
     }
 
     private void CreateRangeMesh()
     {
         GameObject rangeObject = new GameObject("MovementRange");
-        rangeObject.transform.SetParent(transform);
-        rangeObject.transform.localPosition = Vector3.zero;
+        rangeObject.transform.SetParent(null);
+        rangeObject.transform.position = transform.position;
 
         MeshFilter meshFilter = rangeObject.AddComponent<MeshFilter>();
         rangeMeshRenderer = rangeObject.AddComponent<MeshRenderer>();
@@ -25,21 +30,40 @@ public class MovementRangeVisualizer : MonoBehaviour
         // Disk mesh oluştur
         Mesh mesh = new Mesh();
         int segments = 32;
-        Vector3[] vertices = new Vector3[segments + 1];
-        int[] triangles = new int[segments * 3];
+        
+        // Üst ve alt yüzey için vertex sayısını iki katına çıkar
+        Vector3[] vertices = new Vector3[(segments + 1) * 2];
+        int[] triangles = new int[segments * 3 * 2];
 
+        // Üst yüzey vertexleri - 0.5f scale ile oluştur (çünkü localScale ile 2 çarpacağız)
         vertices[0] = Vector3.zero;
         for (int i = 0; i < segments; i++)
         {
             float angle = ((float)i / segments) * Mathf.PI * 2;
-            vertices[i + 1] = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+            vertices[i + 1] = new Vector3(Mathf.Cos(angle) * 0.5f, 0, Mathf.Sin(angle) * 0.5f);
         }
 
+        // Alt yüzey vertexleri
+        for (int i = 0; i <= segments; i++)
+        {
+            vertices[i + segments + 1] = vertices[i];
+        }
+
+        // Üst yüzey üçgenleri
         for (int i = 0; i < segments; i++)
         {
             triangles[i * 3] = 0;
             triangles[i * 3 + 1] = i + 1;
             triangles[i * 3 + 2] = (i + 1) % segments + 1;
+        }
+
+        // Alt yüzey üçgenleri (ters yönde)
+        int offset = segments + 1;
+        for (int i = 0; i < segments; i++)
+        {
+            triangles[(i + segments) * 3] = offset;
+            triangles[(i + segments) * 3 + 1] = offset + ((i + 1) % segments + 1);
+            triangles[(i + segments) * 3 + 2] = offset + i + 1;
         }
 
         mesh.vertices = vertices;
@@ -79,9 +103,12 @@ public class MovementRangeVisualizer : MonoBehaviour
 
     public void ShowRange(float radius)
     {
-        if (rangeMeshRenderer != null)
+        if (rangeMeshRenderer != null && moveAction != null)
         {
-            rangeMeshRenderer.transform.localScale = Vector3.one * radius * 2;
+            float actualRange = moveAction.GetCurrentMovementPoints() / moveAction.GetMovementCostPerUnit();
+            
+            rangeMeshRenderer.transform.position = transform.position;
+            rangeMeshRenderer.transform.localScale = Vector3.one * actualRange * 2;
             rangeMeshRenderer.gameObject.SetActive(true);
         }
     }
@@ -94,11 +121,32 @@ public class MovementRangeVisualizer : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (moveAction != null)
+        {
+            moveAction.OnMovementPointsChanged += MoveAction_OnMovementPointsChanged;
+        }
+    }
+
     private void OnDestroy()
     {
+        if (moveAction != null)
+        {
+            moveAction.OnMovementPointsChanged -= MoveAction_OnMovementPointsChanged;
+        }
         if (rangeMeshRenderer != null)
         {
             Destroy(rangeMeshRenderer.material);
+        }
+    }
+
+    private void MoveAction_OnMovementPointsChanged(object sender, EventArgs e)
+    {
+        // Eğer range gösteriliyorsa güncelle
+        if (rangeMeshRenderer != null && rangeMeshRenderer.gameObject.activeSelf)
+        {
+            ShowRange(0);
         }
     }
 } 

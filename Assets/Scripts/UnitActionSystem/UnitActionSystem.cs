@@ -327,8 +327,9 @@ public class UnitActionSystem : MonoBehaviour
             currentRangeVisualizer = selectedUnit.gameObject.AddComponent<MovementRangeVisualizer>();
          }
 
-         float maxRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
-         currentRangeVisualizer.ShowRange(maxRange);
+         // Gerçek hareket mesafesini kullan
+         float actualRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
+         currentRangeVisualizer.ShowRange(actualRange);
       }
       else
       {
