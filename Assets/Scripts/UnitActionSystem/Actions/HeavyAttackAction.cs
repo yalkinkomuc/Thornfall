@@ -7,7 +7,7 @@ public class HeavyAttackAction : BaseMeleeAction
 {
     [SerializeField] private int actionPointCost = 2;
     [SerializeField] private int damageAmount = 60;
-    [SerializeField] private float stoppingDistance = 1.5f;
+    [SerializeField] private float stoppingDistance = 1.5f; // bu ayarlar inspectordan değil scriptten değiştirilebilir
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float hitForce = 10f;
     

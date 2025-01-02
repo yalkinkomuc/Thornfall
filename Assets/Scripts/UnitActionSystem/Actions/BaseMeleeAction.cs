@@ -75,8 +75,19 @@ public abstract class BaseMeleeAction : BaseAction
         }
         else
         {
-            Vector3 targetPos = targetUnit.transform.position - 
-                (targetUnit.transform.position - transform.position).normalized * GetStoppingDistance();
+            float maxMoveRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
+            
+            Vector3 directionToTarget = (targetUnit.transform.position - transform.position).normalized;
+            Vector3 targetPos;
+
+            if (distanceToTarget > maxMoveRange)
+            {
+                targetPos = transform.position + directionToTarget * maxMoveRange;
+            }
+            else
+            {
+                targetPos = targetUnit.transform.position - directionToTarget * GetStoppingDistance();
+            }
             
             moveAction.TakeAction(targetPos, () => {
                 float finalDistance = Vector3.Distance(transform.position, targetUnit.transform.position);
