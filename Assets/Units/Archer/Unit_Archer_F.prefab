@@ -357,6 +357,7 @@ MonoBehaviour:
   arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
   shootPoint: {fileID: 1228487206976992562}
   actionPointsCost: 2
+  isAttacking: 0
 --- !u!114 &6690582999288276869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +379,9 @@ MonoBehaviour:
   damageAmount: 100
   arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
   shootPoint: {fileID: 1228487206976992562}
+  aimDuration: 1
+  rotationSpeed: 10
+  isAttacking: 0
 --- !u!1001 &2946529575610880367
 PrefabInstance:
   m_ObjectHideFlags: 0

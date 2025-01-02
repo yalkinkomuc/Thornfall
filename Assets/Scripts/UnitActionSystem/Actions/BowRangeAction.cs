@@ -6,7 +6,7 @@ using System.Collections;
 public class BowRangeAction : BaseAction, ITargetVisualAction
 {
     [Header("Bow Shoot Information")]
-    [SerializeField] public int bowRange;
+    [SerializeField] private int bowRange;
     [SerializeField] private Transform shootPosition;
     [SerializeField] private float aimDuration = 1;
     [SerializeField] private int damageAmount = 10;

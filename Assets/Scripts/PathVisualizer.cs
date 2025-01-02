@@ -70,7 +70,7 @@ public class PathVisualizer : MonoBehaviour
 
     public void UpdatePath(Vector3 targetPoint)
     {
-        Debug.Log($"UpdatePath called. Target: {targetPoint}");
+        //Debug.Log($"UpdatePath called. Target: {targetPoint}");
         if (targetAgent == null || !targetAgent.enabled)
         {
             Debug.LogWarning("Target agent is null or disabled");
@@ -83,17 +83,17 @@ public class PathVisualizer : MonoBehaviour
             List<Vector3> pathPoints = new List<Vector3>(path.corners);
             pathPoints = FixPathHeight(pathPoints);
             float totalDistance = CalculatePathLength(pathPoints);
-            Debug.Log($"Path calculated. Length: {totalDistance}, Max Distance: {maxDistance}");
+            //Debug.Log($"Path calculated. Length: {totalDistance}, Max Distance: {maxDistance}");
 
             if (totalDistance <= maxDistance)
             {
                 ShowValidPath(pathPoints);
-                Debug.Log("Showing valid path");
+//                Debug.Log("Showing valid path");
             }
             else
             {
                 SplitAndShowPath(pathPoints, maxDistance);
-                Debug.Log("Showing split path");
+             //   Debug.Log("Showing split path");
             }
             
             isPathVisible = true;
@@ -111,7 +111,7 @@ public class PathVisualizer : MonoBehaviour
         {
             validPathRenderer.positionCount = pathPoints.Count;
             validPathRenderer.SetPositions(pathPoints.ToArray());
-            Debug.Log($"Setting valid path with {pathPoints.Count} points");
+//            Debug.Log($"Setting valid path with {pathPoints.Count} points");
         }
 
         if (invalidPathRenderer != null)

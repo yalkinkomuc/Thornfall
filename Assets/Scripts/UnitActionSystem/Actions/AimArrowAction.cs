@@ -5,11 +5,15 @@ using System.Collections;
 
 public class AimArrowAction : BaseAction, ITargetVisualAction
 {
-    [SerializeField] private int actionPointCost = 3;
     [SerializeField] private float bowRange = 8f;
+    [SerializeField] private Transform shootPoint;
+    [SerializeField] private int actionPointCost = 3;
+    
     [SerializeField] private int damageAmount = 30;
     [SerializeField] private GameObject arrowPrefab;
-    [SerializeField] private Transform shootPoint;
+    
+    [SerializeField] private float aimDuration = 1f;
+    [SerializeField] private float rotationSpeed;
 
     private Unit targetUnit;
     private Animator animator;
@@ -17,89 +21,108 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
     private bool canShootArrow;
     public bool isAttacking = false;
 
+    private State state;
+    private float stateTimer;
+
     public event EventHandler OnShootAnimStarted;
     public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
     public event EventHandler OnShootCompleted;
 
-    public class OnArrowFiredEventArgs : EventArgs
+     public class OnArrowFiredEventArgs : EventArgs
     {
         public Unit shootingUnit;
         public Unit targetUnit;
     }
 
+
+  private enum State
+    {
+        Aiming,
+        Shooting,
+        Cooloff,
+    }
+  
+
+    
+
+   
+
     protected override void Awake()
     {
         base.Awake();
-        animator = GetComponentInChildren<Animator>();
-        animationEventHandler = GetComponentInChildren<AnimationEventHandler>();
+        
     }
 
-    private void Start()
-    {
-        if (animationEventHandler != null)
-        {
-            animationEventHandler.OnReloadCompleted += AnimationEventHandler_OnReloadCompleted;
-        }
-    }
 
-    private void OnDestroy()
+private void Update()
     {
-        if (animationEventHandler != null)
-        {
-            animationEventHandler.OnReloadCompleted -= AnimationEventHandler_OnReloadCompleted;
-        }
-    }
-
-    public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
-    {
-        if (isAttacking)
+        if (!isActive)
         {
             return;
         }
 
-        targetUnit = GetValidTarget(bowRange);
-        
-        ActionStart(onActionComplete);
+        stateTimer -= Time.deltaTime;
 
-        if (targetUnit == null)
+        switch (state)
         {
-            ActionComplete();
-            return;
+            case State.Aiming:
+                if (targetUnit != null)
+                {
+                    Vector3 aimDir = (targetUnit.GetUnitWorldPosition() - unit.GetUnitWorldPosition()).normalized;
+                    transform.forward = Vector3.Lerp(transform.forward, aimDir, Time.deltaTime * rotationSpeed);
+                    OnShootAnimStarted?.Invoke(this, EventArgs.Empty);
+                }
+                
+                break;
+
+            case State.Shooting:
+                if (canShootArrow)
+                {
+                    ShootArrow();
+                    canShootArrow = false;
+                    OnShootCompleted?.Invoke(this, EventArgs.Empty);
+                }
+                break;
+
+            case State.Cooloff:
+                break;
         }
 
-        Vector3 aimDir = (targetUnit.transform.position - transform.position).normalized;
-        transform.forward = aimDir;
-
-        canShootArrow = true;
-        animator.SetTrigger("Shoot");
-        OnShootAnimStarted?.Invoke(this, EventArgs.Empty);
+        if (stateTimer <= 0f)
+        {
+            NextState();
+        }
     }
 
-    private void AnimationEventHandler_OnReloadCompleted(object sender, EventArgs e)
+
+    private void NextState()
     {
-        if (!canShootArrow) return;
-        
-        if (targetUnit != null)
+        switch (state)
         {
-            GameObject arrowObject = Instantiate(arrowPrefab, shootPoint.position, Quaternion.identity);
-            ArrowProjectile arrowProjectile = arrowObject.GetComponent<ArrowProjectile>();
-            
-            Vector3 shootTargetPosition = targetUnit.transform.position;
-            shootTargetPosition.y = shootPoint.position.y;
-            
-            arrowProjectile.Setup(shootTargetPosition, targetUnit);
-            arrowProjectile.OnArrowHit += ArrowProjectile_OnHit;
-            
-            OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs 
-            { 
-                shootingUnit = unit,
-                targetUnit = targetUnit 
-            });
+            case State.Aiming:
+                state = State.Shooting;
+                stateTimer = aimDuration;
+                break;
+            case State.Shooting:
+                state = State.Cooloff;
+                stateTimer = 0.35f;
+                break;
+            case State.Cooloff:
+                ActionComplete();
+                break;
+                
         }
-        
-        canShootArrow = false;
-        OnShootCompleted?.Invoke(this, EventArgs.Empty);
-        ActionComplete();
+    }
+    
+    
+    private void ShootArrow()
+    {
+        OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs 
+        { 
+            shootingUnit = unit,
+            targetUnit = targetUnit 
+        });
+
     }
 
     private void ArrowProjectile_OnHit(object sender, ArrowProjectile.OnArrowHitEventArgs e)
@@ -111,12 +134,36 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
         
         ((ArrowProjectile)sender).OnArrowHit -= ArrowProjectile_OnHit;
     }
+    
+    
 
-    public override string GetActionName()
+    public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
-        return "Special Arrow";
+        if (isAttacking)
+        {
+            return;
+        }
+
+        targetUnit = GetValidTarget(bowRange);
+        
+        ActionStart(onActionComplete);
+        
+        if (targetUnit == null || targetUnit == unit)
+        {
+            ActionComplete();
+            return;
+        }
+
+        
+
+        state = State.Aiming;
+        stateTimer = aimDuration;
+        canShootArrow = true;
+
+        
     }
 
+    
     public override int GetActionPointsCost()
     {
         if (GetValidTarget(bowRange) == null)
@@ -125,6 +172,19 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
         }
         return actionPointCost;
     }
+
+    public int GetDamageAmount()
+    {
+        return damageAmount;
+    }    
+    
+
+    public override string GetActionName()
+    {
+        return "Special Arrow";
+    }
+
+  
 
     public override bool ShouldShowTargetVisual(Unit targetUnit)
     {
