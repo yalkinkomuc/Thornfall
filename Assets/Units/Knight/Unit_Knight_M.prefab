@@ -1376,6 +1376,50 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.051840592, y: 0.007028345, z: -0.031847037}
     m_Extent: {x: 0.099100366, y: 0.040416606, z: 0.042962395}
   m_DirtyAABB: 0
+--- !u!1 &1325245974679897548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4270614184360327556}
+  - component: {fileID: 3685134762253292864}
+  m_Layer: 0
+  m_Name: PathfindingAlgorithmForMelee
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4270614184360327556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325245974679897548}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4781129869398205342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3685134762253292864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325245974679897548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade186b853c3ac6429f0c2b67f169c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1535716021690384273
 GameObject:
   m_ObjectHideFlags: 0
@@ -3508,6 +3552,7 @@ Transform:
   - {fileID: 4034278442358311300}
   - {fileID: 942767789391608682}
   - {fileID: 8705259965995854405}
+  - {fileID: 4270614184360327556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8269667727850119495
@@ -3652,12 +3697,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 1
-  actionPointCost: 1
   attackRange: 2
-  damageAmount: 40
   stoppingDistance: 1.5
   hitForce: 10
   isAttacking: 0
+  actionPointCost: 1
+  damageAmount: 40
 --- !u!114 &7244654941501216966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3674,12 +3719,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 0
-  actionPointCost: 2
   attackRange: 2
-  damageAmount: 60
   stoppingDistance: 2
   hitForce: 15
   isAttacking: 0
+  actionPointCost: 2
+  damageAmount: 60
 --- !u!1 &3372141301688510530
 GameObject:
   m_ObjectHideFlags: 0

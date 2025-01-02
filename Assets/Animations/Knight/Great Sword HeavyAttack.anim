@@ -102564,13 +102564,6 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 4.6666665
-    functionName: 
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 4.6666665
     functionName: ReloadComplete
     data: 
     objectReferenceParameter: {fileID: 0}

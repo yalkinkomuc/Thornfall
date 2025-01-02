@@ -504,6 +504,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit_Archer_F
       objectReference: {fileID: 0}
+    - target: {fileID: 5526030936066902425, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
+      propertyPath: actionPoints
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526030936066902425, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
+      propertyPath: maxActionPoints
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6690582999288276869, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
+      propertyPath: aimDuration
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2056,6 +2068,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4474081211127299335, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
+      propertyPath: maxHealth
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 82.20373
@@ -2477,13 +2493,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Archer_F (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 2574583183658055300, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 79.60373
+      value: 81.70373
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2491,7 +2503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 53.391438
+      value: 57.191437
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalRotation.w
