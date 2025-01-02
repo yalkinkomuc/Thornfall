@@ -7,9 +7,9 @@ public class MeleeAction : BaseMeleeAction
 {
     [SerializeField] private int actionPointCost = 1;
     [SerializeField] private int damageAmount = 40;
-    [SerializeField] protected override float stoppingDistance { get; set; } = 1.5f;
-    [SerializeField] protected override float attackRange { get; set; } = 2f;
-    [SerializeField] protected override float hitForce { get; set; } = 10f;
+    [SerializeField] private float meleeAttackRange = 2f;
+    [SerializeField] private float meleeStoppingDistance = 1f;
+    [SerializeField] private float meleeHitForce = 10f;
 
     protected override void OnStartAttack()
     {
@@ -19,6 +19,21 @@ public class MeleeAction : BaseMeleeAction
     protected override int GetDamageAmount()
     {
         return damageAmount;
+    }
+
+    protected override float GetHitForce()
+    {
+        return meleeHitForce;
+    }
+
+    protected override float GetStoppingDistance()
+    {
+        return meleeStoppingDistance;
+    }
+
+    protected override float GetAttackRange()
+    {
+        return meleeAttackRange;
     }
 
     public override int GetActionPointsCost()

@@ -66,7 +66,7 @@ public abstract class BaseMeleeAction : BaseAction
         ActionStart(onActionComplete);
 
         float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
-        float effectiveRange = attackRange + stoppingDistance;
+        float effectiveRange = GetAttackRange() + GetStoppingDistance();
 
         if (distanceToTarget <= effectiveRange)
         {
@@ -76,7 +76,7 @@ public abstract class BaseMeleeAction : BaseAction
         else
         {
             Vector3 targetPos = targetUnit.transform.position - 
-                (targetUnit.transform.position - transform.position).normalized * stoppingDistance;
+                (targetUnit.transform.position - transform.position).normalized * GetStoppingDistance();
             
             moveAction.TakeAction(targetPos, () => {
                 float finalDistance = Vector3.Distance(transform.position, targetUnit.transform.position);
@@ -95,14 +95,22 @@ public abstract class BaseMeleeAction : BaseAction
 
     protected virtual void StartAttack()
     {
+        if (!unit.TrySpendActionPointsToTakeAction(this))
+        {
+            ActionComplete();
+            return;
+        }
+
         Vector3 targetDirection = (targetUnit.transform.position - transform.position).normalized;
         transform.forward = targetDirection;
         OnStartAttack();
     }
 
-    protected abstract void OnStartAttack();  // Her melee action kendi animasyonunu tetikleyecek
-
-    protected abstract int GetDamageAmount();  // Her melee action kendi hasar miktarını belirleyecek
+    protected abstract void OnStartAttack();
+    protected abstract int GetDamageAmount();
+    protected abstract float GetHitForce();
+    protected abstract float GetStoppingDistance();
+    protected abstract float GetAttackRange();
 
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
     {
@@ -124,7 +132,7 @@ public abstract class BaseMeleeAction : BaseAction
             {
                 Vector3 direction = (targetUnit.transform.position - transform.position).normalized;
                 direction.y = 0.5f;
-                rb.AddForce(direction * hitForce, ForceMode.Impulse);
+                rb.AddForce(direction * GetHitForce(), ForceMode.Impulse);
             }
         }
     }
@@ -133,10 +141,5 @@ public abstract class BaseMeleeAction : BaseAction
     {
         float maxMoveRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
         return pathfinding.GetValidTargetListWithPath(radius, maxMoveRange);
-    }
-
-    public float GetAttackRange()
-    {
-        return attackRange;
     }
 } 

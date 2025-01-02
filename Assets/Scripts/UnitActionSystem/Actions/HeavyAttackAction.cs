@@ -7,9 +7,9 @@ public class HeavyAttackAction : BaseMeleeAction
 {
     [SerializeField] private int actionPointCost = 2;
     [SerializeField] private int damageAmount = 60;
-    [SerializeField] protected override float stoppingDistance { get; set; } = 1.5f;
-    [SerializeField] protected override float attackRange { get; set; } = 2f;
-    [SerializeField] protected override float hitForce { get; set; } = 10f;
+    [SerializeField] private float stoppingDistance = 1.5f;
+    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float hitForce = 10f;
     
 
     protected override void OnStartAttack()
@@ -20,6 +20,21 @@ public class HeavyAttackAction : BaseMeleeAction
     protected override int GetDamageAmount()
     {
         return damageAmount;
+    }
+
+    protected override float GetHitForce()
+    {
+        return hitForce;
+    }
+
+    protected override float GetStoppingDistance()
+    {
+        return stoppingDistance;
+    }
+
+    protected override float GetAttackRange()
+    {
+        return attackRange;
     }
 
     public override int GetActionPointsCost()

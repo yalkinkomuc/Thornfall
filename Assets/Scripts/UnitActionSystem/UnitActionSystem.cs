@@ -182,7 +182,17 @@ public class UnitActionSystem : MonoBehaviour
       // Melee veya Heavy Attack için hedef kontrolü yap
       if (selectedAction is MeleeAction || selectedAction is HeavyAttackAction)
       {
-         HandleMeleeAction();
+         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
+         {
+            if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
+            {
+               // Action point kontrolünü kaldır
+               SetBusy();
+               selectedAction.TakeAction(MouseWorld.GetMouseWorldPosition(), ClearBusy);
+               OnActionStarted?.Invoke(this, EventArgs.Empty);
+            }
+         }
          return;
       }
 
