@@ -3629,7 +3629,7 @@ MonoBehaviour:
   whatIsUnit:
     serializedVersion: 2
     m_Bits: 256
-  isCombatAction: 0
+  isDefaultCombatAction: 0
   pathVisualizer: {fileID: 5393368184762173489}
   stoppingDistance: 0.5
   moveSpeed: 8
@@ -3651,12 +3651,13 @@ MonoBehaviour:
   whatIsUnit:
     serializedVersion: 2
     m_Bits: 256
-  isCombatAction: 1
+  isDefaultCombatAction: 1
   actionPointCost: 1
   attackRange: 2
   damageAmount: 40
   stoppingDistance: 1.5
   hitForce: 10
+  isAttacking: 0
 --- !u!114 &7244654941501216966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3672,12 +3673,13 @@ MonoBehaviour:
   whatIsUnit:
     serializedVersion: 2
     m_Bits: 256
-  isCombatAction: 0
+  isDefaultCombatAction: 0
   actionPointCost: 2
-  attackRange: 1
+  attackRange: 2
   damageAmount: 60
   stoppingDistance: 2
   hitForce: 15
+  isAttacking: 0
 --- !u!1 &3372141301688510530
 GameObject:
   m_ObjectHideFlags: 0

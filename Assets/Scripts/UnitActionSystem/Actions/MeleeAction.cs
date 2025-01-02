@@ -77,12 +77,9 @@ public class MeleeAction : BaseAction, ITargetVisualAction
 
     public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
-        if (isAttacking)
-        {
-            return;
-        }
+        if (isAttacking) return;
 
-        ActionStart(onActionComplete);
+        targetUnit = null;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue))
@@ -98,13 +95,16 @@ public class MeleeAction : BaseAction, ITargetVisualAction
 
         if (targetUnit == null)
         {
-            ActionComplete();
+            onActionComplete?.Invoke();
             return;
         }
 
-        float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
+        ActionStart(onActionComplete);
 
-        if (distanceToTarget <= attackRange)
+        float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
+        float effectiveRange = attackRange + stoppingDistance;
+
+        if (distanceToTarget <= effectiveRange)
         {
             isAttacking = true;
             StartAttack();
@@ -116,7 +116,7 @@ public class MeleeAction : BaseAction, ITargetVisualAction
             
             moveAction.TakeAction(targetPos, () => {
                 float finalDistance = Vector3.Distance(transform.position, targetUnit.transform.position);
-                if (finalDistance <= attackRange)
+                if (finalDistance <= effectiveRange)
                 {
                     isAttacking = true;
                     StartAttack();
@@ -140,7 +140,11 @@ public class MeleeAction : BaseAction, ITargetVisualAction
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
     {
         isAttacking = false;
-        ActionComplete();
+        targetUnit = null;
+        if (isActive)
+        {
+            ActionComplete();
+        }
     }
 
     private void AnimationEventHandler_OnMeleeHit(object sender, EventArgs e)

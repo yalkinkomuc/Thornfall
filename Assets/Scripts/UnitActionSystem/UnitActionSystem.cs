@@ -179,37 +179,11 @@ public class UnitActionSystem : MonoBehaviour
          return;
       }
 
-      // Eğer MoveAction seçiliyken düşmana tıklandıysa
-      if (selectedAction is MoveAction)
+      // Melee veya Heavy Attack için hedef kontrolü yap
+      if (selectedAction is MeleeAction || selectedAction is HeavyAttackAction)
       {
-         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
-         {
-            if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
-            {
-               BaseAction combatAction = selectedUnit.GetDefaultCombatAction();
-               
-               if (combatAction != null)
-               {
-                  // MeleeAction için normal hareket
-                  SetBusy();
-                  MoveAction moveAction = selectedUnit.GetMoveAction();
-                  moveAction.TakeAction(targetUnit.transform.position, () => {
-                     if (selectedUnit.TrySpendActionPointsToTakeAction(combatAction))
-                     {
-                        combatAction.TakeAction(targetUnit.transform.position, ClearBusy);
-                        
-                     }
-                     else
-                     {
-                        ClearBusy();
-                     }
-                  });
-                  OnActionStarted?.Invoke(this, EventArgs.Empty);
-                  return;
-               }
-            }
-         }
+         HandleMeleeAction();
+         return;
       }
 
       // Normal action handling
@@ -221,6 +195,23 @@ public class UnitActionSystem : MonoBehaviour
       SetBusy();
       selectedAction.TakeAction(MouseWorld.GetMouseWorldPosition(), ClearBusy);
       OnActionStarted?.Invoke(this, EventArgs.Empty);
+   }
+
+   private void HandleMeleeAction()
+   {
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+      if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
+      {
+         if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
+         {
+            if (selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+            {
+               SetBusy();
+               selectedAction.TakeAction(MouseWorld.GetMouseWorldPosition(), ClearBusy);
+               OnActionStarted?.Invoke(this, EventArgs.Empty);
+            }
+         }
+      }
    }
    
    private bool TryHandleUnitSelection()

@@ -61,9 +61,9 @@ public class HeavyAttackAction : BaseAction, ITargetVisualAction
             {
                 float pathLength = CalculatePathLength(path.corners);
                 float maxMoveRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
-                float effectiveRange = attackRange + stoppingDistance;
+                
 
-                if (pathLength <= maxMoveRange + effectiveRange)
+                if (pathLength <= maxMoveRange + attackRange)
                 {
                     validTargets.Add(potentialTarget);
                 }
@@ -85,16 +85,12 @@ public class HeavyAttackAction : BaseAction, ITargetVisualAction
 
     public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
-        if (isAttacking)
-        {
-            return;
-        }
+        if (isAttacking) return;
 
-        ActionStart(onActionComplete);
+        // Her yeni action'da hedefi sıfırla
+        targetUnit = null;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
-
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue))
         {
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit clickedUnit))
@@ -102,20 +98,20 @@ public class HeavyAttackAction : BaseAction, ITargetVisualAction
                 if (clickedUnit.IsEnemy())
                 {
                     targetUnit = clickedUnit;
-                    Debug.DrawLine(transform.position, targetUnit.transform.position, Color.green, 2f);
                 }
             }
         }
 
         if (targetUnit == null)
         {
-            ActionComplete();
+            onActionComplete?.Invoke();
             return;
         }
 
+        ActionStart(onActionComplete);
+
         float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
         float effectiveRange = attackRange + stoppingDistance;
-        Debug.Log($"Distance to target: {distanceToTarget}, Effective Range: {effectiveRange}");
 
         if (distanceToTarget <= effectiveRange)
         {
@@ -152,6 +148,7 @@ public class HeavyAttackAction : BaseAction, ITargetVisualAction
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
     {
         isAttacking = false;
+        targetUnit = null;  // Saldırı bittiğinde hedefi temizle
         if (isActive)
         {
             ActionComplete();
