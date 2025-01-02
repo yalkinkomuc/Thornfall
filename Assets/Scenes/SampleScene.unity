@@ -1652,9 +1652,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 180986240580079224, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3348385889689452877, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
       propertyPath: m_Name
       value: Unit_Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 3566149849601396835, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4781129869398205342, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1694,6 +1702,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4781129869398205342, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239562806025478534, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

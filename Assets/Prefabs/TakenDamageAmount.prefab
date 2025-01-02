@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6386595929255733889}
   - component: {fileID: 6223692041439621168}
   - component: {fileID: 8455903433482858674}
+  - component: {fileID: 8270489901295263279}
   m_Layer: 5
   m_Name: TakenDamageAmount
   m_TagString: Untagged
@@ -138,3 +139,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8270489901295263279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6958365201847292539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff5cfddc9155034ea159de18322aa3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageText: {fileID: 8455903433482858674}
+  animationDuration: 1
+  moveYDistance: 1
+  fadeOutDuration: 0.7
