@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
@@ -11,14 +12,23 @@ public class WorldUI_DamageTextAnimation : MonoBehaviour
     [SerializeField] private float moveYDistance = 1f;
     [SerializeField] private float fadeOutDuration = 0.7f;
 
+    
+    
+    
+    
+    
     private void Awake()
     {
         if (damageText == null)
         {
             damageText = GetComponent<TextMeshProUGUI>();
         }
+        
+        
+        
     }
 
+    
     public void Setup(int damageAmount)
     {
         damageText.text = damageAmount.ToString();

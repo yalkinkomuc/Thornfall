@@ -17,8 +17,6 @@ public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
         unit = GetComponent<Unit>();
     }
 
-    
-
     public abstract string GetActionName();
 
     public virtual int GetActionPointsCost()
