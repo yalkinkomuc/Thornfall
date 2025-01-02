@@ -55,7 +55,7 @@ public class Unit : MonoBehaviour
         // Varsayılan combat action'ı belirle
         foreach (BaseAction action in baseActionArray)
         {
-            if (action.IsCombatAction())
+            if (action.IsDefaultCombatAction())
             {
                 if (action is BowRangeAction && !IsEnemy())  // Archer için
                 {

@@ -7,20 +7,20 @@ public class BowRangeAction : BaseAction, ITargetVisualAction
 {
     [Header("Bow Shoot Information")]
     [SerializeField] private int bowRange;
-    [SerializeField] private Transform shootPosition;
-    [SerializeField] private float aimDuration = 1;
+    [SerializeField] private int actionPointsCost = 2;
     [SerializeField] private int damageAmount = 10;
+    [SerializeField] private float aimDuration = 1;
+    [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private Transform shootPoint;
-    [SerializeField] private int actionPointsCost = 2;
+
+    private Unit targetUnit;
+    private bool canShootArrow;
+    public bool isAttacking = false;
 
     private State state;
     private float stateTimer;
-    private Unit targetUnit;
-    private bool canShootArrow;
-    private float rotateSpeed = 10f;
-    public bool isAttacking = false;
-
+    
     public event EventHandler OnShootAnimStarted;
     public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
     public event EventHandler OnShootCompleted;

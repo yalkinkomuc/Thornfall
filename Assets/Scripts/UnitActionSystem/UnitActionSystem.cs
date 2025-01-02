@@ -18,6 +18,8 @@ public class UnitActionSystem : MonoBehaviour
    
    private MoveAction currentMoveAction;
    
+   private bool isActionAutoSelected = false;  // Action otomatik mi seçildi?
+   
    #region EventHandlers
 
    public event EventHandler OnSelectedUnitChanged;
@@ -78,17 +80,7 @@ public class UnitActionSystem : MonoBehaviour
 
       TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
 
-      // AimArrowAction event'lerini dinle
-      Unit[] unitsWithAimArrow = FindObjectsByType<Unit>(FindObjectsSortMode.None);
-      foreach (Unit unit in unitsWithAimArrow)
-      {
-         AimArrowAction aimArrowAction = unit.GetComponent<AimArrowAction>();
-         if (aimArrowAction != null)
-         {
-            aimArrowAction.OnShootAnimStarted += AimArrowAction_OnShootAnimStarted;
-            aimArrowAction.OnShootCompleted += AimArrowAction_OnShootCompleted;
-         }
-      }
+      
    }
 
    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
@@ -113,38 +105,38 @@ public class UnitActionSystem : MonoBehaviour
          return;
       }
 
-      Vector3 mousePosition = MouseWorld.GetMouseWorldPosition();
-
-      // Sadece MoveAction seçiliyken düşman kontrolü yap
-      if (selectedAction is MoveAction)
+      // Sadece MoveAction seçiliyken veya otomatik seçilmiş action varken kontrol yap
+      if (selectedAction is MoveAction || isActionAutoSelected)
       {
-         // Mouse pozisyonunda düşman var mı kontrol et
          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+         bool isOverEnemy = false;
+
          if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
          {
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
             {
+               isOverEnemy = true;
                // Düşman üzerindeyken varsayılan combat action'ı seç
                if (selectedUnit != null && selectedUnit.GetDefaultCombatAction() != null)
                {
+                  isActionAutoSelected = true;
                   SetSelectedAction(selectedUnit.GetDefaultCombatAction());
                }
             }
-            else
-            {
-               // Düşman üzerinde değilken MoveAction'a geri dön
-               if (selectedUnit != null && selectedAction != selectedUnit.GetMoveAction())
-               {
-                  SetSelectedAction(selectedUnit.GetMoveAction());
-               }
-            }
+         }
+
+         // Sadece otomatik seçilmiş action varken MoveAction'a geri dön
+         if (!isOverEnemy && isActionAutoSelected)
+         {
+            SetSelectedAction(selectedUnit.GetMoveAction());
+            isActionAutoSelected = false;
          }
       }
 
       // Move Action path gösterimi
       if (selectedAction is MoveAction moveAction)
       {
-         moveAction.ShowPath(mousePosition);
+         moveAction.ShowPath(MouseWorld.GetMouseWorldPosition());
       }
 
       if (Input.GetMouseButtonDown(0))
@@ -196,6 +188,7 @@ public class UnitActionSystem : MonoBehaviour
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit) && targetUnit.IsEnemy())
             {
                BaseAction combatAction = selectedUnit.GetDefaultCombatAction();
+               
                if (combatAction != null)
                {
                   // MeleeAction için normal hareket
@@ -205,6 +198,7 @@ public class UnitActionSystem : MonoBehaviour
                      if (selectedUnit.TrySpendActionPointsToTakeAction(combatAction))
                      {
                         combatAction.TakeAction(targetUnit.transform.position, ClearBusy);
+                        
                      }
                      else
                      {
@@ -350,15 +344,15 @@ public class UnitActionSystem : MonoBehaviour
       OnBusyChanged?.Invoke(this, isBusy);
    }
 
-   private void AimArrowAction_OnShootAnimStarted(object sender, EventArgs e)
-   {
-      SetBusy();
-   }
-
-   private void AimArrowAction_OnShootCompleted(object sender, EventArgs e)
-   {
-      ClearBusy();
-   }
+   // private void AimArrowAction_OnShootAnimStarted(object sender, EventArgs e)
+   // {
+   //    SetBusy();
+   // }
+   //
+   // private void AimArrowAction_OnShootCompleted(object sender, EventArgs e)
+   // {
+   //    ClearBusy();
+   // }
 
    #endregion
    
@@ -402,27 +396,24 @@ public class UnitActionSystem : MonoBehaviour
 
    public void SetSelectedAction(BaseAction baseAction)
    {
-      selectedAction = baseAction;
+      // UI'dan manuel seçim yapılıyorsa flag'i resetle
+      if (EventSystem.current.IsPointerOverGameObject())
+      {
+         isActionAutoSelected = false;
+      }
 
+      selectedAction = baseAction;
+      
       if (selectedAction is MoveAction moveAction)
       {
          currentMoveAction = moveAction;
-         
-         // Range visualizer'ı kontrol et ve yoksa ekle
-        
-
-         // Gerçek hareket mesafesini kullan
-         float actualRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
-         
       }
       else
       {
-         // Başka bir aksiyon seçildiğinde gösterimleri kapat
          if (currentMoveAction != null)
          {
             currentMoveAction.HidePath();
          }
-        
       }
 
       OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);

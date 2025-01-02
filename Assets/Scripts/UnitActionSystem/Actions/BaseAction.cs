@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
 {
@@ -9,7 +10,7 @@ public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
     protected Action onActionComplete;
 
     [SerializeField] protected LayerMask whatIsUnit;
-    [SerializeField] protected bool isCombatAction = false;
+    [FormerlySerializedAs("isCombatAction")] [SerializeField] protected bool isDefaultCombatAction = false;
     
     protected virtual void Awake()
     {
@@ -124,7 +125,7 @@ public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
 
   
     
-    public bool IsCombatAction() => isCombatAction;
+    public bool IsDefaultCombatAction() => isDefaultCombatAction;
 
     public virtual bool ShouldShowTargetVisual(Unit targetUnit)
     {

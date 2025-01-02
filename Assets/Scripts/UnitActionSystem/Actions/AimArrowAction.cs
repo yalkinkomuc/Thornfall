@@ -6,21 +6,17 @@ using System.Collections;
 public class AimArrowAction : BaseAction, ITargetVisualAction
 {
     [SerializeField] private float bowRange = 8f;
-    [SerializeField] private Transform shootPoint;
     [SerializeField] private int actionPointCost = 3;
-    
     [SerializeField] private int damageAmount = 30;
-    [SerializeField] private GameObject arrowPrefab;
-    
     [SerializeField] private float aimDuration = 1f;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private Transform shootPoint;
+    [SerializeField] private GameObject arrowPrefab;
 
     private Unit targetUnit;
-    private Animator animator;
-    private AnimationEventHandler animationEventHandler;
     private bool canShootArrow;
     public bool isAttacking = false;
-
+    
     private State state;
     private float stateTimer;
 
@@ -43,10 +39,6 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
     }
   
 
-    
-
-   
-
     protected override void Awake()
     {
         base.Awake();
@@ -54,6 +46,13 @@ public class AimArrowAction : BaseAction, ITargetVisualAction
     }
 
 
+    public override string GetActionName()
+    {
+        return "Special Arrow";
+    }
+
+    
+    
 private void Update()
     {
         if (!isActive)
@@ -178,12 +177,37 @@ private void Update()
         return damageAmount;
     }    
     
-
-    public override string GetActionName()
+    private void AnimationEventHandler_OnReloadCompleted(object sender, EventArgs e)
     {
-        return "Special Arrow";
+        if (!canShootArrow) return;
+        
+        if (targetUnit != null)
+        {
+            // Ok'un yönünü hedef yönüne çevir
+            Vector3 aimDir = (targetUnit.transform.position - shootPoint.position).normalized;
+            Quaternion arrowRotation = Quaternion.LookRotation(aimDir);
+            
+            // Ok'u doğru rotasyonla spawn et
+            GameObject arrowObject = Instantiate(arrowPrefab, shootPoint.position, arrowRotation);
+            ArrowProjectile arrowProjectile = arrowObject.GetComponent<ArrowProjectile>();
+            
+            Vector3 targetPosition = targetUnit.transform.position;
+            targetPosition.y = shootPoint.position.y;
+            
+            arrowProjectile.Setup(targetPosition, targetUnit);
+            arrowProjectile.OnArrowHit += ArrowProjectile_OnHit;
+            
+            OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs 
+            { 
+                shootingUnit = unit,
+                targetUnit = targetUnit 
+            });
+        }
+        
+        canShootArrow = false;
     }
 
+   
   
 
     public override bool ShouldShowTargetVisual(Unit targetUnit)
