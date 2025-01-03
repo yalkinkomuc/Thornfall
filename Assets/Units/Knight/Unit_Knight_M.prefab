@@ -3678,7 +3678,7 @@ MonoBehaviour:
   actionPointCost: 2
   damageAmount: 60
   stoppingDistance: 2
-  attackRange: 2
+  attackRange: 1
   hitForce: 15
 --- !u!1 &3372141301688510530
 GameObject:

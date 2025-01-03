@@ -4889,14 +4889,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit_Berserker_M
       objectReference: {fileID: 0}
-    - target: {fileID: 4234277884168081587, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: whatIsUnit.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 4234277884168081587, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: isDefaultCombatAction
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6702310149379904535, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 74.742195
@@ -4936,14 +4928,6 @@ PrefabInstance:
     - target: {fileID: 6702310149379904535, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7224687842362083491, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: attackRange
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7224687842362083491, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
-      propertyPath: whatIsUnit.m_Bits
-      value: 256
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

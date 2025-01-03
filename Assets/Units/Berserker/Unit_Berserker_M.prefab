@@ -205,6 +205,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73a56e27b1a01e4ea80a27acc4c9ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whatIsUnit:
+    serializedVersion: 2
+    m_Bits: 256
+  isDefaultCombatAction: 0
+  isAttacking: 0
+  actionPointCost: 2
+  damageAmount: 60
+  stoppingDistance: 1.5
+  attackRange: 1
+  hitForce: 10
 --- !u!1 &4369069900184805792
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +438,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.05, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6702310149379904535}
