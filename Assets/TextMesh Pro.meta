@@ -5,4 +5,55 @@ DefaultImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
+  assetBundleVariant:
+#!/usr/bin/env python3
+"""
+Demonstrates how to parse and modify a Unity .meta file in YAML.
+Requires PyYAML: pip install PyYAML
+"""
+
+import yaml
+
+yaml_input = r"""fileFormatVersion: 2
+guid: f54d1bd14bd3ca042bd867b519fee8cc
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
   assetBundleVariant: 
+"""
+
+def main():
+    # Parse the YAML text
+    data = yaml.safe_load(yaml_input)
+    
+    # data is likely a dict: {
+    #   'fileFormatVersion': 2,
+    #   'guid': 'f54d1bd14bd3ca042bd867b519fee8cc',
+    #   'folderAsset': 'yes',
+    #   'DefaultImporter': {
+    #       'externalObjects': {},
+    #       'userData': None,
+    #       'assetBundleName': None,
+    #       'assetBundleVariant': None
+    #   }
+    # }
+    
+    print("[Original Data]:", data)
+
+    # Example: update the GUID
+    data['guid'] = "1234567890abcdef1234567890abcdef"  # a new 32-char hex string
+    
+    # Optionally set an assetBundleName
+    if 'DefaultImporter' in data and isinstance(data['DefaultImporter'], dict):
+        data['DefaultImporter']['assetBundleName'] = "my_bundle"
+    
+    # Dump updated data back to YAML
+    updated_yaml = yaml.dump(data, sort_keys=False)
+    
+    print("\n[Updated YAML]:\n")
+    print(updated_yaml)
+
+if __name__ == "__main__":
+    main()
