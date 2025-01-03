@@ -41,7 +41,11 @@ public abstract class BaseMeleeAction : BaseAction
 
     public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
-        if (isAttacking) return;
+        if (isAttacking)
+        {
+            Debug.Log("Already attacking, returning");
+            return;
+        }
 
         targetUnit = null;
 
@@ -53,12 +57,14 @@ public abstract class BaseMeleeAction : BaseAction
                 if (clickedUnit.IsEnemy())
                 {
                     targetUnit = clickedUnit;
+                    Debug.Log($"Target unit found: {targetUnit.name}");
                 }
             }
         }
 
         if (targetUnit == null)
         {
+            Debug.Log("No target unit found, completing action");
             onActionComplete?.Invoke();
             return;
         }
@@ -68,14 +74,18 @@ public abstract class BaseMeleeAction : BaseAction
         float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
         float effectiveRange = GetAttackRange() + GetStoppingDistance();
 
+        Debug.Log($"Distance to target: {distanceToTarget}, Effective Range: {effectiveRange}");
+
         if (distanceToTarget <= effectiveRange)
         {
+            Debug.Log("Target in range, starting attack");
             isAttacking = true;
             StartAttack();
         }
         else
         {
             float maxMoveRange = moveAction.GetMaxMovementPoints() / moveAction.GetMovementCostPerUnit();
+            Debug.Log($"Max move range: {maxMoveRange}");
             
             Vector3 directionToTarget = (targetUnit.transform.position - transform.position).normalized;
             Vector3 targetPos;
@@ -83,21 +93,26 @@ public abstract class BaseMeleeAction : BaseAction
             if (distanceToTarget > maxMoveRange)
             {
                 targetPos = transform.position + directionToTarget * maxMoveRange;
+                Debug.Log($"Moving to max range position: {targetPos}");
             }
             else
             {
                 targetPos = targetUnit.transform.position - directionToTarget * GetStoppingDistance();
+                Debug.Log($"Moving to stopping distance position: {targetPos}");
             }
             
             moveAction.TakeAction(targetPos, () => {
                 float finalDistance = Vector3.Distance(transform.position, targetUnit.transform.position);
+                Debug.Log($"Final distance after move: {finalDistance}");
                 if (finalDistance <= effectiveRange)
                 {
+                    Debug.Log("In range after move, starting attack");
                     isAttacking = true;
                     StartAttack();
                 }
                 else
                 {
+                    Debug.Log("Still out of range after move, completing action");
                     ActionComplete();
                 }
             });

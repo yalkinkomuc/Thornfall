@@ -1709,7 +1709,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3566149849601396835, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd36df18c24a1a041a3dc50a4c45bcfe, type: 3}
@@ -4887,6 +4888,14 @@ PrefabInstance:
     - target: {fileID: 3330294908778982266, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_Name
       value: Unit_Berserker_M
+      objectReference: {fileID: 0}
+    - target: {fileID: 4234277884168081587, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: whatIsUnit.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4234277884168081587, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: isDefaultCombatAction
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6702310149379904535, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_LocalPosition.x
