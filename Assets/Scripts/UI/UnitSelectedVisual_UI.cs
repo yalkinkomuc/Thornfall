@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitSelectedVisual_UI : MonoBehaviour
 {
     [SerializeField] private Unit unit;
-    public MeshRenderer selectedCircleMeshRenderer;
+    [SerializeField] MeshRenderer selectedCircleMeshRenderer;
 
     private void Awake()
     {

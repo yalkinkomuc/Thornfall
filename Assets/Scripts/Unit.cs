@@ -67,6 +67,11 @@ public class Unit : MonoBehaviour
                     defaultCombatAction = action;
                     break;
                 }
+                else if (action is BerserkerMeleeAction && !IsEnemy())
+                {
+                    defaultCombatAction = action;
+                    break;
+                }
             }
         }
     }

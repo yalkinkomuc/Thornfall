@@ -159,7 +159,7 @@ public class UnitActionSystem : MonoBehaviour
       }
 
       // Eğer zaten bir hedef birimi varsa, yeni bir aksiyon alımına izin verme
-      if (selectedAction is MeleeAction meleeAction && meleeAction.isAttacking)
+      if (selectedAction is BaseMeleeAction baseMeleeAction && baseMeleeAction.isAttacking)
       {
          return;
       }
@@ -168,11 +168,7 @@ public class UnitActionSystem : MonoBehaviour
       {
          return;
       }
-
-      if (selectedAction is HeavyAttackAction heavyAttackAction && heavyAttackAction.isAttacking)
-      {
-         return;
-      }
+      
 
       if (selectedAction is AimArrowAction aimArrowAction && aimArrowAction.isAttacking)
       {
@@ -180,7 +176,7 @@ public class UnitActionSystem : MonoBehaviour
       }
 
       // Melee veya Heavy Attack için hedef kontrolü yap
-      if (selectedAction is MeleeAction || selectedAction is HeavyAttackAction)
+      if (selectedAction is BaseMeleeAction)
       {
          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
          if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
