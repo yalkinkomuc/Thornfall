@@ -6,29 +6,29 @@ using DG.Tweening;
 public class WorldUI_DamageTextAnimation : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI damageText;
+    private Camera mainCamera;
 
     [Header("Animation Settings")]
     [SerializeField] private float animationDuration = 1f;
     [SerializeField] private float moveYDistance = 1f;
     [SerializeField] private float fadeOutDuration = 0.7f;
 
-    
-    
-    
-    
-    
     private void Awake()
     {
         if (damageText == null)
         {
             damageText = GetComponent<TextMeshProUGUI>();
         }
-        
-        
-        
+        mainCamera = Camera.main;
     }
 
-    
+    private void LateUpdate()
+    {
+        // Her frame'de text'i kameraya döndür
+        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward,
+            mainCamera.transform.rotation * Vector3.up);
+    }
+
     public void Setup(int damageAmount)
     {
         damageText.text = damageAmount.ToString();

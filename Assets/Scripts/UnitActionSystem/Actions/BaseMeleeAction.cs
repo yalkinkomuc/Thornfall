@@ -140,6 +140,7 @@ public abstract class BaseMeleeAction : BaseAction
 
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
     {
+        Debug.Log("Attack completed, resetting state");
         isAttacking = false;
         targetUnit = null;
         if (isActive)
