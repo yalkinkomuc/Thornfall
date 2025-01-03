@@ -43,6 +43,8 @@ public class Unit : MonoBehaviour
 
     [SerializeField] private GameObject damageTextPrefab; // Unity Inspector'da atanacak
 
+    private List<StatusEffect> activeEffects = new List<StatusEffect>();
+
     private void Awake()
     {
         healthSystem = GetComponent<HealthSystem>();
@@ -156,7 +158,16 @@ public class Unit : MonoBehaviour
             OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
         }
         
-        
+        // Her tur başında aktif efektleri uygula
+        for (int i = activeEffects.Count - 1; i >= 0; i--)
+        {
+            activeEffects[i].OnTurnStart();
+            
+            if (activeEffects[i].IsFinished)
+            {
+                activeEffects.RemoveAt(i);
+            }
+        }
     }
 
     private void HealthSystem_OnDead(object sender, EventArgs e)
@@ -199,5 +210,15 @@ public class Unit : MonoBehaviour
     public BaseAction GetDefaultCombatAction()
     {
         return defaultCombatAction;
+    }
+
+    public void AddStatusEffect(StatusEffect effect)
+    {
+        activeEffects.Add(effect);
+    }
+
+    public bool HasEffect<T>() where T : StatusEffect
+    {
+        return activeEffects.Any(e => e is T);
     }
 }

@@ -45,4 +45,9 @@ public class MeleeAction : BaseMeleeAction
     {
         return "Melee";
     }
+
+    protected override StatusEffect GetStatusEffect(Unit target)
+    {
+        return new BurnEffect(target, 1, 5); // Normal melee attack yanma efekti uygular
+    }
 } 

@@ -137,6 +137,7 @@ public abstract class BaseMeleeAction : BaseAction
     protected abstract float GetHitForce();
     protected abstract float GetStoppingDistance();
     protected abstract float GetAttackRange();
+    protected abstract StatusEffect GetStatusEffect(Unit target);
 
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
     {
@@ -154,6 +155,12 @@ public abstract class BaseMeleeAction : BaseAction
         if (targetUnit != null)
         {
             targetUnit.Damage(GetDamageAmount());
+
+            StatusEffect effect = GetStatusEffect(targetUnit);
+            if (effect != null)
+            {
+                targetUnit.AddStatusEffect(effect);
+            }
 
             if (targetUnit.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {

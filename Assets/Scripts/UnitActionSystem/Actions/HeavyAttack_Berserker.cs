@@ -44,4 +44,9 @@ public class HeavyAttack_Berserker : BaseMeleeAction
     {
         return "Heavy Attack";
     }
+
+    protected override StatusEffect GetStatusEffect(Unit target)
+    {
+        return new BurnEffect(target, 1, 10); // Berserker heavy attack için yanma efekti
+    }
 }
