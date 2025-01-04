@@ -45,6 +45,6 @@ public class BerserkerMeleeAction : BaseMeleeAction
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return new BleedEffect(target, 1, 7); // Berserker attack için kanama efekti
+        return null;// Berserker attack için kanama efekti
     }
 }

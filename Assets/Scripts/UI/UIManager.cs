@@ -20,14 +20,19 @@ public class UIManager : MonoBehaviour
 
     public void ShowDamageText(Vector3 worldPosition, int damageAmount)
     {
+        ShowDamageText(worldPosition, damageAmount, Color.white);
+    }
+
+    public void ShowDamageText(Vector3 worldPosition, int damageAmount, Color textColor)
+    {
         GameObject textObj = Instantiate(damageTextPrefab, damageTextParent);
-        textObj.transform.position = worldPosition + new Vector3(0, 2f, 0); // Unit'in üstünde başlat
+        textObj.transform.position = worldPosition + new Vector3(0, 2f, 0);
         
         WorldUI_DamageTextAnimation damageText = textObj.GetComponent<WorldUI_DamageTextAnimation>();
         if (damageText != null)
         {
-            damageText.Setup(damageAmount);
-            Destroy(textObj, 2f);  // 2 saniye sonra yok et
+            damageText.Setup(damageAmount, textColor);
+            Destroy(textObj, 2f);
         }
     }
 } 

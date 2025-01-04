@@ -24,15 +24,19 @@ public class WorldUI_DamageTextAnimation : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Her frame'de text'i kameraya döndür
         transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward,
             mainCamera.transform.rotation * Vector3.up);
     }
 
     public void Setup(int damageAmount)
     {
+        Setup(damageAmount, Color.white);
+    }
+
+    public void Setup(int damageAmount, Color textColor)
+    {
         damageText.text = damageAmount.ToString();
-        damageText.color = new Color(1, 0, 0, 1);
+        damageText.color = textColor;
         
         // Yukarı doğru hareket ve fade out animasyonu
         Sequence sequence = DOTween.Sequence();

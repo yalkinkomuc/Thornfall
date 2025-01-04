@@ -8,7 +8,8 @@ public class HeavyAttack_Berserker : BaseMeleeAction
     [SerializeField] private float stoppingDistance = 1.5f; // bu ayarlar inspectordan değil scriptten değiştirilebilir
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float hitForce = 10f;
-    
+    [SerializeField] private int bleedDamageAmount = 10;
+    [SerializeField] private int bleedDurationPerTurn = 1;
 
     protected override void OnStartAttack()
     {
@@ -47,6 +48,6 @@ public class HeavyAttack_Berserker : BaseMeleeAction
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return new BurnEffect(target, 1, 10); // Berserker heavy attack için yanma efekti
+        return new BleedEffect(target, bleedDurationPerTurn, bleedDamageAmount); // Berserker heavy attack için yanma efekti
     }
 }

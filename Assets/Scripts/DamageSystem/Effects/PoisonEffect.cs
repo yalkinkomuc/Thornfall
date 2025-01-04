@@ -1,12 +1,15 @@
+using UnityEngine;
+
 public class PoisonEffect : StatusEffect
 {
-    public PoisonEffect(Unit target, int duration, int damagePerTurn) : base(target, duration, damagePerTurn) { }
+    private static readonly Color poisonColor = new Color(0f, 0.8f, 0f);
 
-    public override void OnTurnStart()
+    public PoisonEffect(Unit target, int duration, int damagePerTurn) 
+        : base(target, duration, damagePerTurn, poisonColor) { }
+
+    protected override void OnTurnStartEffect()
     {
-        targetUnit.Damage(damagePerTurn);
-        // Zehir efekti particle
-        ReduceDuration();
+        // Sadece particle effect
     }
 
     public override string GetEffectName() => "Poison";

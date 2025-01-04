@@ -1,12 +1,15 @@
+using UnityEngine;
+
 public class BleedEffect : StatusEffect
 {
-    public BleedEffect(Unit target, int duration, int damagePerTurn) : base(target, duration, damagePerTurn) { }
+    private static readonly Color bleedColor = Color.red;
 
-    public override void OnTurnStart()
+    public BleedEffect(Unit target, int duration, int damagePerTurn) 
+        : base(target, duration, damagePerTurn, bleedColor) { }
+
+    protected override void OnTurnStartEffect()
     {
-        targetUnit.Damage(damagePerTurn);
-        // Kanama efekti particle
-        ReduceDuration();
+        // Sadece particle effect
     }
 
     public override string GetEffectName() => "Bleed";

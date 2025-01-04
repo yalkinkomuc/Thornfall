@@ -56,4 +56,15 @@ public class HealthSystem : MonoBehaviour
     {
         health = Mathf.Min(health + healAmount, maxHealth);
     }
+
+    public void DamageWithoutText(int damageAmount)
+    {
+        health -= damageAmount;
+        
+        if (health <= 0)
+        {
+            health = 0;
+            Die();
+        }
+    }
 }

@@ -49,6 +49,6 @@ public class HeavyAttackAction : BaseMeleeAction
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return new BleedEffect(target, 1, 8); // Heavy attack kanama efekti uygular
+        return null;// Heavy attack kanama efekti uygular
     }
 } 

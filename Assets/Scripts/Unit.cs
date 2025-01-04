@@ -154,14 +154,24 @@ public class Unit : MonoBehaviour
         if ((IsEnemy() && !TurnSystem.instance.IsPlayerTurn()) || (!IsEnemy() && TurnSystem.instance.IsPlayerTurn()))
         {
             actionPoints = ACTION_POINTS_MAX;
-        
             OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
         }
         
         // Her tur başında aktif efektleri uygula
         for (int i = activeEffects.Count - 1; i >= 0; i--)
         {
-            activeEffects[i].OnTurnStart();
+            // Önce damage text'i göster
+            UIManager.Instance.ShowDamageText(
+                transform.position + Vector3.up * 0.5f,
+                activeEffects[i].damagePerTurn,
+                activeEffects[i].GetDamageColor()
+            );
+
+            // Hasar ver (text göstermeden)
+            healthSystem.DamageWithoutText(activeEffects[i].damagePerTurn);
+            
+            // Efekti işle
+            activeEffects[i].ProcessTurnStart();
             
             if (activeEffects[i].IsFinished)
             {

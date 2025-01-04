@@ -1,12 +1,15 @@
+using UnityEngine;
+
 public class BurnEffect : StatusEffect
 {
-    public BurnEffect(Unit target, int duration, int damagePerTurn) : base(target, duration, damagePerTurn) { }
+    private static readonly Color burnColor = new Color(1f, 0.5f, 0f); // Turuncu
 
-    public override void OnTurnStart()
+    public BurnEffect(Unit target, int duration, int damagePerTurn) 
+        : base(target, duration, damagePerTurn, burnColor) { }
+
+    protected override void OnTurnStartEffect()
     {
-        targetUnit.Damage(damagePerTurn);
-        // Yanma efekti particle
-        ReduceDuration();
+        // Sadece particle effect
     }
 
     public override string GetEffectName() => "Burn";
