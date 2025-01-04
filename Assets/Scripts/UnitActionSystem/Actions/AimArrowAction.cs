@@ -54,12 +54,15 @@ public class AimArrowAction : BaseRangeAction
     {
         yield return new WaitForSeconds(0.2f);
 
+        bool isSameTarget = targetUnits.Count == 2 && targetUnits[0] == targetUnits[1];
+        float delayBetweenShots = isSameTarget ? 0.2f : 0f;
+
         foreach (Unit target in targetUnits)
         {
             if (target != null && target.gameObject != null)
             {
                 SpawnAndShootArrow(target);
-                yield return new WaitForSeconds(arrowSpawnDelay);
+                yield return new WaitForSeconds(delayBetweenShots);
             }
         }
         allArrowsShot = true;
@@ -98,11 +101,6 @@ public class AimArrowAction : BaseRangeAction
 
         Unit newTarget = GetValidTarget(range);
         if (newTarget == null || newTarget == unit)
-        {
-            return;
-        }
-
-        if (targetUnits.Contains(newTarget))
         {
             return;
         }

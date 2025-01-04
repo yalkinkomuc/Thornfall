@@ -238,8 +238,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 9035853813369840075}
-  arrowProjectilePrefab: {fileID: 7423668629036832850, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
-  shootPointTransform: {fileID: 6942174087482738678}
 --- !u!114 &7806167822706598763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,13 +371,14 @@ MonoBehaviour:
     m_Bits: 256
   isDefaultCombatAction: 0
   range: 50
-  aimDuration: 1
+  aimDuration: 0.8
   rotationSpeed: 10
   shootPointTransform: {fileID: 6942174087482738678}
   arrowProjectilePrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
   actionPointsCost: 3
   damageAmount: 100
   maxTargets: 2
+  arrowSpawnDelay: 0
 --- !u!1001 &2946529575610880367
 PrefabInstance:
   m_ObjectHideFlags: 0
