@@ -157,21 +157,15 @@ public abstract class BaseMeleeAction : BaseAction
         if (targetUnit != null)
         {
             int damage = GetDamageAmount();
-            targetUnit.Damage(damage);
-
-            if (targetUnit.HealthSystem.WouldDieFromDamage(damage))
+            
+            if (targetUnit.TryGetComponent<UnitRagdollSpawner>(out var ragdollSpawner))
             {
-                if (targetUnit.TryGetComponent<Rigidbody>(out Rigidbody rb))
-                {
-                    Vector3 attackDirection = transform.forward;
-                    
-                    attackDirection.y = 1f;
-                    
-                    attackDirection.z *= 1.5f;
-                    
-                    rb.AddForce(attackDirection.normalized * GetHitForce(), ForceMode.Impulse);
-                }
+                Vector3 hitDirection = (targetUnit.transform.position - transform.position).normalized;
+                hitDirection.y = 0.3f;
+                ragdollSpawner.SetLastHitInfo(hitDirection, GetHitForce());
             }
+
+            targetUnit.Damage(damage);
 
             StatusEffect effect = GetStatusEffect(targetUnit);
             if (effect != null)

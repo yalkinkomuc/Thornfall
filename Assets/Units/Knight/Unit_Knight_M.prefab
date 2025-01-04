@@ -3652,12 +3652,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 1
+  attackRange: 2
+  stoppingDistance: 1
+  hitForce: 25
   isAttacking: 0
   actionPointCost: 1
   damageAmount: 40
-  meleeAttackRange: 2
-  meleeStoppingDistance: 1
-  meleeHitForce: 10
+  attackRangeOverride: 1
+  stoppingDistanceOverride: 1
+  hitForceOverride: 5
 --- !u!114 &7244654941501216966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3674,12 +3677,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 0
+  attackRange: 1
+  stoppingDistance: 2
+  hitForce: 25
   isAttacking: 0
   actionPointCost: 2
-  damageAmount: 60
-  stoppingDistance: 2
-  attackRange: 1
-  hitForce: 15
+  damageAmount: 100
+  attackRangeOverride: 1
+  stoppingDistanceOverride: 1.5
+  hitForceOverride: 8
 --- !u!1 &3372141301688510530
 GameObject:
   m_ObjectHideFlags: 0

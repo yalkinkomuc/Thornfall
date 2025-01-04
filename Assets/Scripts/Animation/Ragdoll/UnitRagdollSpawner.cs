@@ -9,6 +9,14 @@ public class UnitRagdollSpawner : MonoBehaviour
    
    private HealthSystem healthSystem;
    private bool hasSpawnedRagdoll = false;
+   private Vector3 lastHitDirection;
+   private float lastHitForce;
+
+   public void SetLastHitInfo(Vector3 direction, float force)
+   {
+       lastHitDirection = direction;
+       lastHitForce = force;
+   }
 
    private void Awake()
    {
@@ -39,6 +47,6 @@ public class UnitRagdollSpawner : MonoBehaviour
       hasSpawnedRagdoll = true;
       Transform ragdollTransform = Instantiate(ragdollPrefab, transform.position, transform.rotation);
       UnitRagdoll unitRagdoll = ragdollTransform.GetComponent<UnitRagdoll>();
-      unitRagdoll.Setup(originalRootBone);
+      unitRagdoll.Setup(originalRootBone, lastHitDirection, lastHitForce);
    }
 }
