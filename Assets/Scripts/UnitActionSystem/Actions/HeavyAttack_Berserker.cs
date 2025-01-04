@@ -48,6 +48,6 @@ public class HeavyAttack_Berserker : BaseMeleeAction
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return new BleedEffect(target, bleedDurationPerTurn, bleedDamageAmount); // Berserker heavy attack için yanma efekti
+        return new PoisonEffect(target, bleedDurationPerTurn, bleedDamageAmount); // Berserker heavy attack için yanma efekti
     }
 }

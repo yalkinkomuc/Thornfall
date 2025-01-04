@@ -21,18 +21,25 @@ public class HealthSystem : MonoBehaviour
         health = maxHealth;
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(DamageData damageData)
     {
-        health -= damageAmount;
+        health -= damageData.amount;
         
-        // Damage text'i UI Manager üzerinden göster
-        UIManager.Instance.ShowDamageText(transform.position, damageAmount);
+        if (damageData.showDamageText)
+        {
+            UIManager.Instance.ShowDamageText(transform.position, damageData.amount, damageData.textColor);
+        }
         
         if (health <= 0)
         {
             health = 0;
             Die();
         }
+    }
+
+    public void Damage(int damageAmount)
+    {
+        Damage(DamageData.Create(damageAmount));
     }
 
     private void Die()
@@ -59,12 +66,6 @@ public class HealthSystem : MonoBehaviour
 
     public void DamageWithoutText(int damageAmount)
     {
-        health -= damageAmount;
-        
-        if (health <= 0)
-        {
-            health = 0;
-            Die();
-        }
+        Damage(DamageData.Create(damageAmount, showText: false));
     }
 }
