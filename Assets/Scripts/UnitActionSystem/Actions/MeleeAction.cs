@@ -5,11 +5,14 @@ using System.Collections.Generic;
 
 public class MeleeAction : BaseMeleeAction
 {
+    [Header("Melee Settings")]
     [SerializeField] private int actionPointCost = 1;
     [SerializeField] private int damageAmount = 40;
-    [SerializeField] private float meleeAttackRange = 2f;
-    [SerializeField] private float meleeStoppingDistance = 1f;
-    [SerializeField] private float meleeHitForce = 10f;
+    
+    [Header("Override Base Settings")]
+    [SerializeField] private float attackRangeOverride = 2f;
+    [SerializeField] private float stoppingDistanceOverride = 1f;
+    [SerializeField] private float hitForceOverride = 10f;
 
     protected override void OnStartAttack()
     {
@@ -23,17 +26,17 @@ public class MeleeAction : BaseMeleeAction
 
     protected override float GetHitForce()
     {
-        return meleeHitForce;
+        return hitForceOverride;
     }
 
     protected override float GetStoppingDistance()
     {
-        return meleeStoppingDistance;
+        return stoppingDistanceOverride;
     }
 
     protected override float GetAttackRange()
     {
-        return meleeAttackRange;
+        return attackRangeOverride;
     }
 
     public override int GetActionPointsCost()
@@ -48,6 +51,6 @@ public class MeleeAction : BaseMeleeAction
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return null; // Normal melee attack yanma efekti uygular
+        return null;
     }
 } 

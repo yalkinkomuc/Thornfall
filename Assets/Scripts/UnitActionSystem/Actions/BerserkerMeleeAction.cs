@@ -2,35 +2,29 @@ using UnityEngine;
 
 public class BerserkerMeleeAction : BaseMeleeAction
 {
+    [Header("Melee Attack Settings")]
     [SerializeField] private int actionPointCost = 1;
     [SerializeField] private int damageAmount = 40;
-    [SerializeField] private float meleeAttackRange = 2f;
-    [SerializeField] private float meleeStoppingDistance = 1f;
-    [SerializeField] private float meleeHitForce = 10f;
+    [SerializeField] private int poisonDamageAmount = 5;
+    [SerializeField] private int poisonDurationPerTurn = 2;
+    
+    [Header("Override Base Settings")]
+    [SerializeField] private float attackRangeOverride = 2f;
+    [SerializeField] private float stoppingDistanceOverride = 1f;
+    [SerializeField] private float hitForceOverride = 15f;
+
+    protected override float GetAttackRange() => attackRangeOverride;
+    protected override float GetStoppingDistance() => stoppingDistanceOverride;
+    protected override float GetHitForce() => hitForceOverride;
 
     protected override void OnStartAttack()
     {
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("MeleeAttack");
     }
 
     protected override int GetDamageAmount()
     {
         return damageAmount;
-    }
-
-    protected override float GetHitForce()
-    {
-        return meleeHitForce;
-    }
-
-    protected override float GetStoppingDistance()
-    {
-        return meleeStoppingDistance;
-    }
-
-    protected override float GetAttackRange()
-    {
-        return meleeAttackRange;
     }
 
     public override int GetActionPointsCost()
@@ -40,11 +34,11 @@ public class BerserkerMeleeAction : BaseMeleeAction
 
     public override string GetActionName()
     {
-        return "Melee";
+        return "Melee Attack";
     }
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return null;// Berserker attack için kanama efekti
+        return new PoisonEffect(target, poisonDurationPerTurn, poisonDamageAmount);
     }
 }

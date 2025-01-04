@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class BaseMeleeAction : BaseAction
 {
-    [SerializeField] protected virtual float attackRange { get; set; } = 2f;
-    [SerializeField] protected virtual float stoppingDistance { get; set; } = 1f;
-    [SerializeField] protected virtual float hitForce { get; set; } = 10f;
+    [Header("Melee Settings")]
+    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float stoppingDistance = 1f;
+    [SerializeField] private float hitForce = 20f;
     
     protected Animator animator;
     protected AnimationEventHandler animationEventHandler;
@@ -58,6 +59,7 @@ public abstract class BaseMeleeAction : BaseAction
                 {
                     targetUnit = clickedUnit;
                     Debug.Log($"Target unit found: {targetUnit.name}");
+                    Debug.Log($"Target unit health: {targetUnit.HealthSystem.GetHealthNormalized()}"); //
                 }
             }
         }
@@ -134,9 +136,9 @@ public abstract class BaseMeleeAction : BaseAction
 
     protected abstract void OnStartAttack();
     protected abstract int GetDamageAmount();
-    protected abstract float GetHitForce();
-    protected abstract float GetStoppingDistance();
-    protected abstract float GetAttackRange();
+    protected virtual float GetHitForce() => hitForce;
+    protected virtual float GetStoppingDistance() => stoppingDistance;
+    protected virtual float GetAttackRange() => attackRange;
     protected abstract StatusEffect GetStatusEffect(Unit target);
 
     private void AnimationEventHandler_OnAttackCompleted(object sender, EventArgs e)
@@ -154,19 +156,27 @@ public abstract class BaseMeleeAction : BaseAction
     {
         if (targetUnit != null)
         {
-            targetUnit.Damage(GetDamageAmount());
+            int damage = GetDamageAmount();
+            targetUnit.Damage(damage);
+
+            if (targetUnit.HealthSystem.WouldDieFromDamage(damage))
+            {
+                if (targetUnit.TryGetComponent<Rigidbody>(out Rigidbody rb))
+                {
+                    Vector3 attackDirection = transform.forward;
+                    
+                    attackDirection.y = 1f;
+                    
+                    attackDirection.z *= 1.5f;
+                    
+                    rb.AddForce(attackDirection.normalized * GetHitForce(), ForceMode.Impulse);
+                }
+            }
 
             StatusEffect effect = GetStatusEffect(targetUnit);
             if (effect != null)
             {
                 targetUnit.AddStatusEffect(effect);
-            }
-
-            if (targetUnit.TryGetComponent<Rigidbody>(out Rigidbody rb))
-            {
-                Vector3 direction = (targetUnit.transform.position - transform.position).normalized;
-                direction.y = 0.5f;
-                rb.AddForce(direction * GetHitForce(), ForceMode.Impulse);
             }
         }
     }

@@ -5,12 +5,18 @@ using System.Collections.Generic;
 
 public class HeavyAttackAction : BaseMeleeAction
 {
+    [Header("Heavy Attack Settings")]
     [SerializeField] private int actionPointCost = 2;
     [SerializeField] private int damageAmount = 60;
-    [SerializeField] private float stoppingDistance = 1.5f; // bu ayarlar inspectordan değil scriptten değiştirilebilir
-    [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float hitForce = 10f;
     
+    [Header("Override Base Settings")]
+    [SerializeField] private float attackRangeOverride = 2f;
+    [SerializeField] private float stoppingDistanceOverride = 1.5f;
+    [SerializeField] private float hitForceOverride = 25f;
+
+    protected override float GetAttackRange() => attackRangeOverride;
+    protected override float GetStoppingDistance() => stoppingDistanceOverride;
+    protected override float GetHitForce() => hitForceOverride;
 
     protected override void OnStartAttack()
     {
@@ -20,21 +26,6 @@ public class HeavyAttackAction : BaseMeleeAction
     protected override int GetDamageAmount()
     {
         return damageAmount;
-    }
-
-    protected override float GetHitForce()
-    {
-        return hitForce;
-    }
-
-    protected override float GetStoppingDistance()
-    {
-        return stoppingDistance;
-    }
-
-    protected override float GetAttackRange()
-    {
-        return attackRange;
     }
 
     public override int GetActionPointsCost()

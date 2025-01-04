@@ -68,4 +68,9 @@ public class HealthSystem : MonoBehaviour
     {
         Damage(DamageData.Create(damageAmount, showText: false));
     }
+
+    public bool WouldDieFromDamage(int damageAmount)
+    {
+        return (health - damageAmount) <= 0;
+    }
 }

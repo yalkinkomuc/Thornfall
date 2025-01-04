@@ -45,9 +45,11 @@ public class Unit : MonoBehaviour
 
     private List<StatusEffect> activeEffects = new List<StatusEffect>();
 
+    public HealthSystem HealthSystem { get; private set; }
+
     private void Awake()
     {
-        healthSystem = GetComponent<HealthSystem>();
+        HealthSystem = GetComponent<HealthSystem>();
         moveAction = GetComponent<MoveAction>();
         baseActionArray = GetComponents<BaseAction>();
         
