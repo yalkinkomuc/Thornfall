@@ -177,8 +177,9 @@ public class MoveAction : BaseAction
         }
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
     }
 
@@ -265,5 +266,11 @@ public class MoveAction : BaseAction
     {
         currentMovementPoints = maxMovementPoints;
         OnMovementPointsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        TurnSystem.instance.OnTurnChanged -= TurnSystem_OnTurnChanged;
     }
 }

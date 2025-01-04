@@ -4,8 +4,6 @@ using UnityEngine;
 public class UnitAnimator : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private Transform arrowProjectilePrefab;
-    [SerializeField] private Transform shootPointTransform;
 
     private void Awake()
     {
@@ -19,14 +17,27 @@ public class UnitAnimator : MonoBehaviour
         {
             bowRangeAction.OnShootAnimStarted += BowRangeAction_OnShootAnimStarted;
             bowRangeAction.OnShootCompleted += BowRangeAction_OnShootCompleted;
-            bowRangeAction.OnArrowFired += BowRangeAction_OnArrowFired;
         }
 
         if (TryGetComponent<AimArrowAction>(out AimArrowAction aimArrowAction))
         {
             aimArrowAction.OnShootAnimStarted += AimArrowAction_OnShootAnimStarted;
-            aimArrowAction.OnArrowFired += AimArrowAction_OnArrowFired;
             aimArrowAction.OnShootCompleted += AimArrowAction_OnShootCompleted;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (TryGetComponent<BowRangeAction>(out BowRangeAction bowRangeAction))
+        {
+            bowRangeAction.OnShootAnimStarted -= BowRangeAction_OnShootAnimStarted;
+            bowRangeAction.OnShootCompleted -= BowRangeAction_OnShootCompleted;
+        }
+
+        if (TryGetComponent<AimArrowAction>(out AimArrowAction aimArrowAction))
+        {
+            aimArrowAction.OnShootAnimStarted -= AimArrowAction_OnShootAnimStarted;
+            aimArrowAction.OnShootCompleted -= AimArrowAction_OnShootCompleted;
         }
     }
 
@@ -38,31 +49,6 @@ public class UnitAnimator : MonoBehaviour
     private void BowRangeAction_OnShootAnimStarted(object sender, EventArgs e)
     {
         animator.SetTrigger("Shoot");
-    }
-    
-    private void BowRangeAction_OnArrowFired(object sender, BowRangeAction.OnArrowFiredEventArgs e)
-    {
-        animator.SetTrigger("Shoot");
-
-        Transform arrowProjectileTransform = Instantiate(arrowProjectilePrefab, shootPointTransform.position, Quaternion.identity);
-        ArrowProjectile arrowProjectile = arrowProjectileTransform.GetComponent<ArrowProjectile>();
-
-        Vector3 targetUnitShootAtPosition = e.targetUnit.GetUnitWorldPosition();
-        targetUnitShootAtPosition.y = shootPointTransform.position.y;
-    
-        arrowProjectile.Setup(targetUnitShootAtPosition, e.targetUnit);
-    
-        // BowRangeAction'dan damage değerini al
-        BowRangeAction bowRangeAction = sender as BowRangeAction;
-        if (bowRangeAction != null)
-        {
-            arrowProjectile.OnArrowHit += (s, args) => {
-                if (args.targetUnit != null)
-                {
-                    args.targetUnit.Damage(bowRangeAction.GetDamageAmount());
-                }
-            };
-        }
     }
     
     private void BowRangeAction_OnShootCompleted(object sender, EventArgs e)
@@ -90,35 +76,6 @@ public class UnitAnimator : MonoBehaviour
     private void AimArrowAction_OnShootAnimStarted(object sender, EventArgs e)
     {
         animator.SetTrigger("Shoot");
-    }
-
-    private void AimArrowAction_OnArrowFired(object sender, AimArrowAction.OnArrowFiredEventArgs e)
-    {
-        animator.SetTrigger("Shoot");
-
-        Transform arrowProjectileTransform =
-            Instantiate(arrowProjectilePrefab, shootPointTransform.position, Quaternion.identity);
-        ArrowProjectile arrowProjectile = arrowProjectileTransform.GetComponent<ArrowProjectile>();
-
-        Vector3 targetUnitShootAtPosition = e.targetUnit.GetUnitWorldPosition();
-        targetUnitShootAtPosition.y = shootPointTransform.position.y;
-
-        arrowProjectile.Setup(targetUnitShootAtPosition, e.targetUnit);
-
-        AimArrowAction aimArrowAction = sender as AimArrowAction;
-
-        if (aimArrowAction != null)
-        {
-            arrowProjectile.OnArrowHit += (s, args) =>
-            {
-                if (args.targetUnit != null)
-                {
-                    args.targetUnit.Damage(aimArrowAction.GetDamageAmount());
-                }
-            };
-
-        }
-
     }
 
     private void AimArrowAction_OnShootCompleted(object sender, EventArgs e)

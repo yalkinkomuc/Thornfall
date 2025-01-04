@@ -3,245 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-public class BowRangeAction : BaseAction, ITargetVisualAction
+public class BowRangeAction : BaseRangeAction
 {
-    [Header("Bow Shoot Information")]
-    [SerializeField] private int bowRange;
+    [Header("Bow Range Settings")]
     [SerializeField] private int actionPointsCost = 2;
     [SerializeField] private int damageAmount = 10;
-    [SerializeField] private float aimDuration = 1;
-    [SerializeField] private float rotateSpeed = 10f;
-    [SerializeField] private GameObject arrowPrefab;
-    [SerializeField] private Transform shootPoint;
-
-    private Unit targetUnit;
-    private bool canShootArrow;
-    public bool isAttacking = false;
-
-    private State state;
-    private float stateTimer;
-    
-    public event EventHandler OnShootAnimStarted;
-    public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
-    public event EventHandler OnShootCompleted;
-    
-    
-
-    public class OnArrowFiredEventArgs : EventArgs
-    {
-        public Unit shootingUnit;
-        public Unit targetUnit;
-    }
-
-    private enum State
-    {
-        Aiming,
-        Shooting,
-        Cooloff,
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     public override string GetActionName() => "Range Attack";
 
-    private void Update()
-    {
-        
-        
-        if (!isActive)
-        {
-            return;
-        }
-        
-
-        stateTimer -= Time.deltaTime;
-
-        switch (state)
-        {
-            case State.Aiming:
-                if (targetUnit != null)
-                {
-                    Vector3 targetAimDir = (targetUnit.GetUnitWorldPosition() - unit.GetUnitWorldPosition()).normalized;
-                    transform.forward = Vector3.Lerp(transform.forward, targetAimDir, Time.deltaTime * rotateSpeed);
-                    OnShootAnimStarted?.Invoke(this, EventArgs.Empty);
-                }
-               
-                break;
-
-            case State.Shooting:
-                if (canShootArrow)
-                {
-                    ShootArrow();
-                    canShootArrow = false;
-                    OnShootCompleted?.Invoke(this, EventArgs.Empty);
-                }
-                break;
-
-            case State.Cooloff:
-                break;
-        }
-
-        if (stateTimer <= 0f)
-        {
-            NextState();
-        }
-    }
-
-    private void NextState()
-    {
-        
-        
-        switch (state)
-        {
-            case State.Aiming:
-                state = State.Shooting;
-                stateTimer = aimDuration;
-                break;
-            case State.Shooting:
-                state = State.Cooloff;
-                stateTimer = 0.35f; // değişebilir 0.5f ti normalde
-                break;
-            case State.Cooloff:
-                ActionComplete();
-                break;
-        }
-    }
-
-    private void ShootArrow()
-    {
-        OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs
-        {
-            shootingUnit = unit,
-            targetUnit = targetUnit
-        });
-    }
-
-    private void ArrowProjectile_OnHit(object sender, ArrowProjectile.OnArrowHitEventArgs e)
-    {
-        if (e.targetUnit != null)
-        {
-            e.targetUnit.Damage(damageAmount);
-            Debug.Log(" VURDUMM");
-        }
-        
-        // Event listener'ı temizle
-        ((ArrowProjectile)sender).OnArrowHit -= ArrowProjectile_OnHit;
-    }
-
-    public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
-    {
-        if (isAttacking)
-        {
-            return; // Eğer zaten saldırıyorsak, yeni bir hedef seçme
-        }
-
-        targetUnit = GetValidTarget(bowRange);
-        
-        // Önce ActionStart'ı çağır, sonra kontrolleri yap
-        ActionStart(onActionComplete);
-
-        if (targetUnit == null || targetUnit == unit)
-        {
-            // Hedef yoksa veya kendisiyse direkt bitir
-            ActionComplete();
-            return;
-        }
-        
-        state = State.Aiming;
-        stateTimer = aimDuration;
-        canShootArrow = true;
-    }
-
-
     public override int GetActionPointsCost()
     {
-
-        if (GetValidTarget(bowRange) == null)
+        if (GetValidTarget(GetRange()) == null)
         {
-            return 0; 
+            return 0;
         }
-        
         return actionPointsCost;
     }
 
-    public override List<Unit> GetValidTargetListWithSphere(float radius)
-    {
-        return base.GetValidTargetListWithSphere(bowRange);
-    }
-
-
-    // private void OnDrawGizmos()
-    // {
-    //     // Sphere'ı sahnede çizmek için Gizmos kullanıyoruz
-    //     Gizmos.color = Color.red;  // Sphere'ın rengini belirleyelim
-    //     Gizmos.DrawWireSphere(transform.position, bowRange);  // Sphere çiz
-    //
-    //     // Menzildeki tüm birimleri alalım ve konsola yazdıralım
-    //     List<Unit> validTargets = GetValidTargetListWithSphere(bowRange);
-    //     foreach (Unit target in validTargets)
-    //     {
-    //         // Her hedefin adını konsola yazdır
-    //         Debug.Log($"Menzildeki hedef: {target.name}");
-    //     }
-    // }
-
-    // Geçerli hedefi almak için bir fonksiyon
-    // private Unit GetValidTarget(float attackRange)
-    // {
-    //     // Hedefin geçerli olup olmadığını kontrol et
-    //     return base.GetValidTarget(bowRange);
-    // }
-
-    public int GetDamageAmount()
+    public override int GetDamageAmount()
     {
         return damageAmount;
     }
 
-    public int GetMaxShootDistance()
+    protected override void Start()
     {
-        return bowRange;
+        base.Start();
+        OnShootAnimStarted += BowRangeAction_OnShootAnimStarted;
     }
 
-    public override bool ShouldShowTargetVisual(Unit targetUnit)
+    protected override void OnDestroy()
     {
-        // Önce base'in kontrolünü yap (mouse üzerinde mi?)
-        if (!base.ShouldShowTargetVisual(targetUnit)) return false;
-        
-        // Sonra menzil kontrolü yap
-        List<Unit> validTargets = GetValidTargetListWithSphere(bowRange);
-        return validTargets.Contains(targetUnit);
+        base.OnDestroy();
+        OnShootAnimStarted -= BowRangeAction_OnShootAnimStarted;
     }
 
-    private void AnimationEventHandler_OnReloadCompleted(object sender, EventArgs e)
+    private void BowRangeAction_OnShootAnimStarted(object sender, EventArgs e)
     {
-        if (!canShootArrow) return;
-        
-        if (targetUnit != null)
-        {
-            // Ok'un yönünü hedef yönüne çevir
-            Vector3 aimDir = (targetUnit.transform.position - shootPoint.position).normalized;
-            Quaternion arrowRotation = Quaternion.LookRotation(aimDir);
-            
-            // Ok'u doğru rotasyonla spawn et
-            GameObject arrowObject = Instantiate(arrowPrefab, shootPoint.position, arrowRotation);
-            ArrowProjectile arrowProjectile = arrowObject.GetComponent<ArrowProjectile>();
-            
-            Vector3 targetPosition = targetUnit.transform.position;
-            targetPosition.y = shootPoint.position.y;
-            
-            arrowProjectile.Setup(targetPosition, targetUnit);
-            arrowProjectile.OnArrowHit += ArrowProjectile_OnHit;
-            
-            OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs 
-            { 
-                shootingUnit = unit,
-                targetUnit = targetUnit 
-            });
-        }
-        
-        canShootArrow = false;
+        // Burada gerekirse özel işlemler yapabilirsiniz
+    }
+
+    protected override void OnStartAttack()
+    {
+        animator.SetTrigger("Shoot");
     }
 }

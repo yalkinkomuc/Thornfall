@@ -173,10 +173,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2843207020710791702}
   - component: {fileID: 5526030936066902425}
-  - component: {fileID: 4495752159656540321}
   - component: {fileID: 1547265482394508876}
   - component: {fileID: 7806167822706598763}
   - component: {fileID: 5594921849722840706}
+  - component: {fileID: 4495752159656540321}
   - component: {fileID: 6136882491061049174}
   - component: {fileID: 7126542116238606873}
   - component: {fileID: 1492721841236850015}
@@ -220,32 +220,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSystem: {fileID: 7806167822706598763}
-  actionPoints: 5
+  actionPoints: 500
   teamID: 1
   isEnemy: 0
-  maxActionPoints: 10
+  maxActionPoints: 500
   damageTextPrefab: {fileID: 0}
---- !u!65 &4495752159656540321
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4969305086794659215}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.66, y: 2.0317426, z: 1}
-  m_Center: {x: 0, y: 1.0396328, z: 0}
 --- !u!114 &1547265482394508876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,6 +268,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ragdollPrefab: {fileID: 2843207020710791702, guid: d922cbbc45324194593c9eb659e7ddc9, type: 3}
   originalRootBone: {fileID: 2520108446378026448}
+--- !u!65 &4495752159656540321
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969305086794659215}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.66, y: 2.0317426, z: 1}
+  m_Center: {x: 0, y: 1.0396328, z: 0}
 --- !u!195 &6136882491061049174
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -349,14 +349,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 1
-  bowRange: 50
+  range: 50
+  aimDuration: 1
+  rotationSpeed: 10
+  shootPointTransform: {fileID: 6942174087482738678}
+  arrowProjectilePrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
   actionPointsCost: 2
   damageAmount: 100
-  aimDuration: 1
-  rotateSpeed: 10
-  arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
-  shootPoint: {fileID: 1228487206976992562}
-  isAttacking: 0
 --- !u!114 &6690582999288276869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,14 +372,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 0
-  bowRange: 50
-  actionPointCost: 3
-  damageAmount: 100
+  range: 50
   aimDuration: 1
   rotationSpeed: 10
-  shootPoint: {fileID: 1228487206976992562}
-  arrowPrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
-  isAttacking: 0
+  shootPointTransform: {fileID: 6942174087482738678}
+  arrowProjectilePrefab: {fileID: 1968571817369545076, guid: 66edfbbcb41951b47a8304310211f006, type: 3}
+  actionPointsCost: 3
+  damageAmount: 100
+  maxTargets: 2
 --- !u!1001 &2946529575610880367
 PrefabInstance:
   m_ObjectHideFlags: 0

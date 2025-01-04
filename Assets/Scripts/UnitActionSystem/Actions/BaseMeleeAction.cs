@@ -25,14 +25,16 @@ public abstract class BaseMeleeAction : BaseAction
         pathfinding = GetComponent<PathfindingUtils>();
     }
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
         animationEventHandler.OnAttackCompleted += AnimationEventHandler_OnAttackCompleted;
         animationEventHandler.OnMeleeHit += AnimationEventHandler_OnMeleeHit;
     }
 
-    protected virtual void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (animationEventHandler != null)
         {
             animationEventHandler.OnAttackCompleted -= AnimationEventHandler_OnAttackCompleted;

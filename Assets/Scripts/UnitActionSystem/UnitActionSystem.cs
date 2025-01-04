@@ -158,6 +158,17 @@ public class UnitActionSystem : MonoBehaviour
          return;
       }
 
+      // Range action kontrolü
+      if (selectedAction is BaseRangeAction baseRangeAction)
+      {
+         // Action point kontrolünü TakeAction içinde yapacağız
+         baseRangeAction.TakeAction(MouseWorld.GetMouseWorldPosition(), () => {
+            ClearBusy();
+            // OnActionStarted event'i StartAttackSequence'da tetikleniyor
+         });
+         return;
+      }
+
       // Eğer zaten bir hedef birimi varsa, yeni bir aksiyon alımına izin verme
       if (selectedAction is BaseMeleeAction baseMeleeAction && baseMeleeAction.isAttacking)
       {
@@ -419,4 +430,8 @@ public class UnitActionSystem : MonoBehaviour
    #endregion
    
    
+   public void InvokeActionStarted()
+   {
+      OnActionStarted?.Invoke(this, EventArgs.Empty);
+   }
 }

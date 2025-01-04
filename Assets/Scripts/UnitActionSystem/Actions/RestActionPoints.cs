@@ -9,8 +9,9 @@ public class RestActionPoints : BaseAction, ITargetVisualAction
     private bool isUsedThisTurn = false;
     private Unit targetUnit; // Yenilenecek ally unit
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
     }
 
@@ -105,8 +106,9 @@ public class RestActionPoints : BaseAction, ITargetVisualAction
         targetUnit = null;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (TurnSystem.instance != null)
         {
             TurnSystem.instance.OnTurnChanged -= TurnSystem_OnTurnChanged;

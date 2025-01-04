@@ -137,4 +137,14 @@ public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
         }
         return false;
     }
+
+    protected virtual void Start()
+    {
+        // Base implementation
+    }
+
+    protected virtual void OnDestroy()
+    {
+        // Base implementation
+    }
 }
