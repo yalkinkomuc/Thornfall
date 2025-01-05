@@ -54,7 +54,7 @@ public class AimArrowAction : BaseRangeAction
     {
         yield return new WaitForSeconds(0.2f);
 
-        bool isSameTarget = targetUnits.Count == 2 && targetUnits[0] == targetUnits[1];
+        bool isSameTarget = targetUnits.Count > 1 && targetUnits[0] == targetUnits[1];
         float delayBetweenShots = isSameTarget ? 0.2f : 0f;
 
         foreach (Unit target in targetUnits)
@@ -95,8 +95,28 @@ public class AimArrowAction : BaseRangeAction
         }
     }
 
+    public event EventHandler<OnTargetListChangedEventArgs> OnTargetListChanged;
+
+    public class OnTargetListChangedEventArgs : EventArgs
+    {
+        public int currentTargetCount;
+    }
+
     public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (targetUnits.Count > 0)
+            {
+                targetUnits.RemoveAt(targetUnits.Count - 1);
+                OnTargetListChanged?.Invoke(this, new OnTargetListChangedEventArgs 
+                { 
+                    currentTargetCount = targetUnits.Count 
+                });
+            }
+            return;
+        }
+
         if (isAttacking) return;
 
         Unit newTarget = GetValidTarget(range);
@@ -111,6 +131,10 @@ public class AimArrowAction : BaseRangeAction
         }
 
         targetUnits.Add(newTarget);
+        OnTargetListChanged?.Invoke(this, new OnTargetListChangedEventArgs 
+        { 
+            currentTargetCount = targetUnits.Count 
+        });
         
         if (targetUnits.Count >= MaxTargetCount)
         {
@@ -157,6 +181,12 @@ public class AimArrowAction : BaseRangeAction
         arrowsHitCount = 0;
         hasShot = false;
         hasStartedShooting = false;
+        isAttacking = false;
+        
+        OnTargetListChanged?.Invoke(this, new OnTargetListChangedEventArgs { currentTargetCount = 0 });
+        
+        UnitActionSystem.Instance.RefreshActionVisuals();
+        
         base.CompleteAction();
     }
 
@@ -167,6 +197,33 @@ public class AimArrowAction : BaseRangeAction
         arrowsHitCount = 0;
         hasShot = false;
         hasStartedShooting = false;
+        isAttacking = false;
+        
+        OnTargetListChanged?.Invoke(this, new OnTargetListChangedEventArgs { currentTargetCount = 0 });
+        
+        UnitActionSystem.Instance.RefreshActionVisuals();
+        
         base.CancelAction();
+    }
+
+    public override bool ShouldShowTargetVisual(Unit targetUnit)
+    {
+        // Eğer unit zaten hedef listesindeyse her zaman göster
+        if (targetUnits.Contains(targetUnit))
+        {
+            return true;
+        }
+
+        // Değilse base class'ın kontrolünü yap (mouse üzerinde ve menzilde mi?)
+        if (!base.ShouldShowTargetVisual(targetUnit)) return false;
+
+        // Eğer maksimum hedef sayısına ulaşılmadıysa ve geçerli bir hedefse göster
+        if (targetUnits.Count < MaxTargetCount)
+        {
+            List<Unit> validTargets = GetValidTargetListWithSphere(range);
+            return validTargets.Contains(targetUnit);
+        }
+
+        return false;
     }
 }

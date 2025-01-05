@@ -139,12 +139,18 @@ public class UnitActionSystem : MonoBehaviour
          moveAction.ShowPath(MouseWorld.GetMouseWorldPosition());
       }
 
+      // Sol tık kontrolü
       if (Input.GetMouseButtonDown(0))
       {
          if (TryHandleUnitSelection())
          {
             return;
          }
+         HandleSelectedAction();
+      }
+      // Sağ tık kontrolü - sadece AimArrowAction için
+      else if (Input.GetMouseButtonDown(1) && selectedAction is AimArrowAction)
+      {
          HandleSelectedAction();
       }
    }
@@ -433,5 +439,10 @@ public class UnitActionSystem : MonoBehaviour
    public void InvokeActionStarted()
    {
       OnActionStarted?.Invoke(this, EventArgs.Empty);
+   }
+
+   public void RefreshActionVisuals()
+   {
+      OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
    }
 }

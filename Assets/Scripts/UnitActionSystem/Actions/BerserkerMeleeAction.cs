@@ -19,7 +19,7 @@ public class BerserkerMeleeAction : BaseMeleeAction
 
     protected override void OnStartAttack()
     {
-        animator.SetTrigger("MeleeAttack");
+        animator.SetTrigger("Attack");
     }
 
     protected override int GetDamageAmount()
