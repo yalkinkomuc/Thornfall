@@ -76,6 +76,11 @@ public class Unit : MonoBehaviour
                     defaultCombatAction = action;
                     break;
                 }
+                else if (action is BasicStabRogue && !IsEnemy())
+                {
+                    defaultCombatAction = action;
+                    break;
+                }
             }
         }
     }

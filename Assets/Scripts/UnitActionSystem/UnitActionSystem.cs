@@ -250,21 +250,35 @@ public class UnitActionSystem : MonoBehaviour
          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
          if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
          {
+            Debug.Log($"Hit object: {raycastHit.transform.name}"); // Debug için
+
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
             {
+               Debug.Log($"Found Unit component: {unit.name}"); // Debug için
+
                if (unit == selectedUnit)
                {
+                  Debug.Log("Unit already selected"); // Debug için
                   return false;
                }
 
                if (unit.IsEnemy())
                {
+                  Debug.Log("Unit is enemy"); // Debug için
                   return false;
                }
                
                SetSelectedUnit(unit);
                return true;
             }
+            else
+            {
+               Debug.Log("No Unit component found"); // Debug için
+            }
+         }
+         else
+         {
+            Debug.Log($"No hit with layer mask: {unitLayerMask.value}"); // Debug için
          }
       }
       
