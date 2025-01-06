@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ActionButton_UI : MonoBehaviour
 {
@@ -9,12 +10,29 @@ public class ActionButton_UI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textMeshPro;
     [SerializeField] private GameObject selectedGameObject;
     [SerializeField] private Image buttonImage;
+    [SerializeField] private GameObject tooltipPanel;
+    [SerializeField] private TextMeshProUGUI tooltipText;
     
     private BaseAction baseAction;
     
     private void Awake()
     {
         buttonImage = GetComponent<Image>();
+        
+        EventTrigger trigger = gameObject.AddComponent<EventTrigger>();
+        
+        EventTrigger.Entry enterEntry = new EventTrigger.Entry();
+        enterEntry.eventID = EventTriggerType.PointerEnter;
+        enterEntry.callback.AddListener((data) => { ShowTooltip(); });
+        trigger.triggers.Add(enterEntry);
+        
+        EventTrigger.Entry exitEntry = new EventTrigger.Entry();
+        exitEntry.eventID = EventTriggerType.PointerExit;
+        exitEntry.callback.AddListener((data) => { HideTooltip(); });
+        trigger.triggers.Add(exitEntry);
+        
+        if (tooltipPanel != null)
+            tooltipPanel.SetActive(false);
     }
     
     public void SetBaseAction(BaseAction baseAction)
@@ -87,5 +105,35 @@ public class ActionButton_UI : MonoBehaviour
         {
             UpdateRestButtonVisual(restAction);
         }
+    }
+
+    private void ShowTooltip()
+    {
+        if (tooltipPanel != null && tooltipText != null && baseAction != null)
+        {
+            tooltipText.text = baseAction.GetActionDescription();
+            tooltipText.textWrappingMode = TextWrappingModes.Normal;
+            tooltipText.overflowMode = TextOverflowModes.Overflow;
+            tooltipText.enableAutoSizing = true;
+            tooltipText.fontSizeMin = 12;
+            tooltipText.fontSizeMax = 14;
+            tooltipText.alignment = TextAlignmentOptions.Center;
+            
+            // Panel'i button'ın üstüne konumlandır
+            RectTransform panelRect = tooltipPanel.GetComponent<RectTransform>();
+            if (panelRect != null)
+            {
+                panelRect.pivot = new Vector2(0.5f, 0);
+                panelRect.anchoredPosition = new Vector2(0, 10);
+            }
+            
+            tooltipPanel.SetActive(true);
+        }
+    }
+
+    private void HideTooltip()
+    {
+        if (tooltipPanel != null)
+            tooltipPanel.SetActive(false);
     }
 }

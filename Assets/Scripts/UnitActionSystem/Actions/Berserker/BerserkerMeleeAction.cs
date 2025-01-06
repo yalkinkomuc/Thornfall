@@ -5,8 +5,8 @@ public class BerserkerMeleeAction : BaseMeleeAction
     [Header("Melee Attack Settings")]
     [SerializeField] private int actionPointCost = 1;
     [SerializeField] private int damageAmount = 40;
-    [SerializeField] private int poisonDamageAmount = 5;
-    [SerializeField] private int poisonDurationPerTurn = 2;
+   // [SerializeField] private int poisonDamageAmount = 5;
+    //[SerializeField] private int poisonDurationPerTurn = 2;
     
     [Header("Override Base Settings")]
     [SerializeField] private float attackRangeOverride = 2f;
@@ -39,6 +39,6 @@ public class BerserkerMeleeAction : BaseMeleeAction
 
     protected override StatusEffect GetStatusEffect(Unit target)
     {
-        return new PoisonEffect(target, poisonDurationPerTurn, poisonDamageAmount);
+        return null;
     }
 }

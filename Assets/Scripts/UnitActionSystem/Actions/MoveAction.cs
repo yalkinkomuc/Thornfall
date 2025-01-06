@@ -273,4 +273,9 @@ public class MoveAction : BaseAction
         base.OnDestroy();
         TurnSystem.instance.OnTurnChanged -= TurnSystem_OnTurnChanged;
     }
+
+    public override string GetActionDescription()
+    {
+        return $"Move to the target point. Cost: {currentMovementPoints} movement points.";
+    }
 }

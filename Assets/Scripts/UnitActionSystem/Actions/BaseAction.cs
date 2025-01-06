@@ -147,4 +147,9 @@ public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
     {
         // Base implementation
     }
+
+    public virtual string GetActionDescription()
+    {
+        return "No description available.";
+    }
 }
