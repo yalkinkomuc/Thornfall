@@ -7,6 +7,7 @@ public class AnimationEventHandler : MonoBehaviour
     public event EventHandler OnReloadCompleted;
     public event EventHandler OnMeleeHit;
     public event EventHandler OnAimShot;
+    public event EventHandler OnWeaponFlip;
     // Diğer animation event'leri için yeni event'ler eklenebilir...
 
     // Animation Event'ler tarafından çağrılacak methodlar
@@ -32,4 +33,6 @@ public class AnimationEventHandler : MonoBehaviour
     {
         OnAimShot?.Invoke(this, EventArgs.Empty);
     }
+
+    
 } 
