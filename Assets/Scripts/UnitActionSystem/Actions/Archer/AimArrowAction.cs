@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class AimArrowAction : BaseRangeAction
 {
@@ -57,7 +58,9 @@ public class AimArrowAction : BaseRangeAction
         bool isSameTarget = targetUnits.Count > 1 && targetUnits[0] == targetUnits[1];
         float delayBetweenShots = isSameTarget ? 0.2f : 0f;
 
-        foreach (Unit target in targetUnits)
+        // Hedefleri güvenli bir şekilde işle
+        var targets = targetUnits.ToList(); // Artık ToList() çalışacak
+        foreach (Unit target in targets)
         {
             if (target != null && target.gameObject != null)
             {
@@ -66,6 +69,16 @@ public class AimArrowAction : BaseRangeAction
             }
         }
         allArrowsShot = true;
+    }
+
+    protected internal override void SpawnAndShootArrow(Unit target)
+    {
+        if (shootPointTransform == null || arrowProjectilePrefab == null || target == null)
+        {
+            return;
+        }
+
+        base.SpawnAndShootArrow(target);
     }
 
     protected override void ArrowProjectile_OnHit(object sender, ArrowProjectile.OnArrowHitEventArgs e)
