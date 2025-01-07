@@ -2935,7 +2935,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 449169168124733756, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_Name
-      value: F_Mage
+      value: Unit_Mage_F
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2943,7 +2943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.000002861023
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalPosition.z

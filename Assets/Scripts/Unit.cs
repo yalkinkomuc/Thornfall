@@ -71,12 +71,17 @@ public class Unit : MonoBehaviour
                     defaultCombatAction = action;
                     break;
                 }
-                else if (action is BerserkerMeleeAction && !IsEnemy())
+                else if (action is BerserkerMeleeAction && !IsEnemy()) // Berserker için
                 {
                     defaultCombatAction = action;
                     break;
                 }
-                else if (action is BasicStabRogue && !IsEnemy())
+                else if (action is BasicStabRogue && !IsEnemy()) // Rogue için
+                {
+                    defaultCombatAction = action;
+                    break;
+                }
+                else if (action is BasicSpells && !IsEnemy()) // Mage için
                 {
                     defaultCombatAction = action;
                     break;
