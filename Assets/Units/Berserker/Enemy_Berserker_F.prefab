@@ -8,9 +8,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1637209002222839338, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3c66d487b99a7c841a643c7da9f32623, type: 2}
+    - target: {fileID: 1637209002222839338, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3c66d487b99a7c841a643c7da9f32623, type: 2}
     - target: {fileID: 3330294908778982266, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_Name
-      value: Unit_Berserker_M
+      value: Enemy_Berserker_F
+      objectReference: {fileID: 0}
+    - target: {fileID: 4720188747609819531, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3c66d487b99a7c841a643c7da9f32623, type: 2}
+    - target: {fileID: 4965136776008256456, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4839e0ee5698356489d21f9b8688bae3, type: 2}
+    - target: {fileID: 5956361209041305594, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: teamID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5956361209041305594, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
+      propertyPath: isEnemy
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6702310149379904535, guid: 7c5c9a87234f8e143a3dee8c9218cacc, type: 3}
       propertyPath: m_LocalPosition.x
