@@ -6,6 +6,7 @@ public class DoubleStabRogue : BaseMeleeAction
     [SerializeField] private int baseDamageAmount = 25;
     [SerializeField] private int actionPointsCost = 2;
     [SerializeField] private float backstabAngle = 90f;
+    [SerializeField] private float backStabMultiplier = 1.5f;
 
     protected override void Awake()
     {
@@ -39,11 +40,24 @@ public class DoubleStabRogue : BaseMeleeAction
 
     protected override int GetDamageAmount()
     {
-        if (IsBackstab())
-        {
-            return Mathf.RoundToInt(baseDamageAmount * 1.5f);
-        }
-        return baseDamageAmount;
+        if (targetUnit == null) return baseDamageAmount;
+
+        // Hedeften saldırana doğru vektör
+        Vector3 targetToAttacker = (transform.position - targetUnit.transform.position).normalized;
+        // Sadece Y düzleminde açıyı hesapla
+        targetToAttacker.y = 0;
+        Vector3 targetForward = targetUnit.transform.forward;
+        targetForward.y = 0;
+
+        // İki vektör arasındaki açıyı hesapla (0-180 derece arası)
+        float angle = Vector3.Angle(targetForward, targetToAttacker);
+
+        // Debug.Log($"Backstab angle: {angle}"); // Açıyı kontrol etmek için
+
+        // Eğer açı 135 dereceden büyükse arkadan vuruyoruz demektir
+        bool isBackstab = angle > 135f;
+
+        return isBackstab ? Mathf.RoundToInt(baseDamageAmount * backStabMultiplier) : baseDamageAmount;
     }
 
     private bool IsBackstab()

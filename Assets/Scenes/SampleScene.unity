@@ -717,6 +717,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f2ee7d2ed1f424a47a67bd0dbe5ceb84, type: 2}
+    - target: {fileID: 6690582999288276869, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
+      propertyPath: maxTargets
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6961087343483706131, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -4243,6 +4247,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4589603370824972459, guid: 34e92f59751fd5740950c20728fdbf67, type: 3}
+      propertyPath: hitForce
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5877165983657476126, guid: 34e92f59751fd5740950c20728fdbf67, type: 3}
       propertyPath: health
       value: 10
@@ -5746,6 +5754,14 @@ PrefabInstance:
     - target: {fileID: 889580712104359602, guid: e1b5e16bd7e11ec4f8c34bc87ed3ff7b, type: 3}
       propertyPath: m_Name
       value: Unit_Rogue_F
+      objectReference: {fileID: 0}
+    - target: {fileID: 5303450667321413886, guid: e1b5e16bd7e11ec4f8c34bc87ed3ff7b, type: 3}
+      propertyPath: hitForce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5702470024955331530, guid: e1b5e16bd7e11ec4f8c34bc87ed3ff7b, type: 3}
+      propertyPath: hitForce
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
