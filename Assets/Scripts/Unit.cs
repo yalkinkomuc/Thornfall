@@ -44,7 +44,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private GameObject damageTextPrefab; // Unity Inspector'da atanacak
 
     private List<StatusEffect> activeEffects = new List<StatusEffect>();
-    private List<ElementalSpells> activeElementalSpells = new List<ElementalSpells>();
+    
 
     public HealthSystem HealthSystem { get; private set; }
 
@@ -245,18 +245,12 @@ public class Unit : MonoBehaviour
         activeEffects.Add(effect);
     }
 
-    public void AddElementalSpell(ElementalSpells spell)
-    {
-        activeElementalSpells.Add(spell);
-    }
+  
 
     public bool HasEffect<T>() where T : StatusEffect
     {
         return activeEffects.Any(e => e is T);
     }
 
-    public bool HasElementalSpell<T>() where T : ElementalSpells
-    {
-        return activeElementalSpells.Any(e => e is T);
-    }
+    
 }

@@ -125,7 +125,7 @@ public class BasicSpells : BaseRangeAction
     public override string GetActionName() => "Basic Spells";
     public override int GetActionPointsCost() => actionPointsCost;
     public override int GetDamageAmount() => baseDamage;
-    protected override ElementalSpells GetElementalSpell(Unit target) => null;
+    
 
     private Unit GetValidTarget(float range)
     {

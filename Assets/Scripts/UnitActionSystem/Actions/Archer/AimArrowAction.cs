@@ -16,10 +16,7 @@ public class AimArrowAction : BaseRangeAction
     private int arrowsHitCount = 0;
     private bool hasStartedShooting = false;
 
-    protected override ElementalSpells GetElementalSpell(Unit target)
-    {
-        return null;
-    }
+    
 
     protected override int MaxTargetCount => maxTargets;
 

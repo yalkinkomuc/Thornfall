@@ -24,9 +24,7 @@ public abstract class BaseRangeAction : BaseAction
     public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
     public event EventHandler OnShootCompleted;
     
-    protected abstract ElementalSpells GetElementalSpell(Unit target);
-
-    private List<ElementalSpells> activeElementalSpells = new List<ElementalSpells>();
+   
     
     public class OnArrowFiredEventArgs : EventArgs
     {
@@ -290,12 +288,7 @@ public abstract class BaseRangeAction : BaseAction
 
                 e.targetUnit.Damage(GetDamageAmount());
                 
-                ElementalSpells elementalSpells = GetElementalSpell(targetUnit);
-
-                if (elementalSpells != null)
-                {
-                    e.targetUnit.AddElementalSpell(elementalSpells);
-                }
+                
 
               
             }

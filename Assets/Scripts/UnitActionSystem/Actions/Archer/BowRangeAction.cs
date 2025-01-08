@@ -25,10 +25,7 @@ public class BowRangeAction : BaseRangeAction
         return damageAmount;
     }
 
-    protected override ElementalSpells GetElementalSpell(Unit target)
-    {
-        return null;
-    }
+   
 
     protected override void Start()
     {
