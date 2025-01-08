@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class ElementalSpells
 {
     protected Unit targetUnit;
-    protected int damage;
+    public int damage;
     protected Color elementalDamageColor;
 
     public ElementalSpells(Unit targetUnit, int damage, Color elementalDamageColor)

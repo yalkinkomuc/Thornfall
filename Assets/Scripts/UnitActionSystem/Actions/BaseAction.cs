@@ -152,4 +152,12 @@ public abstract class BaseAction : MonoBehaviour, ITargetVisualAction
     {
         return "No description available.";
     }
+
+    protected virtual void Update()
+    {
+        if (!isActive) return;
+        UpdateAction();
+    }
+
+    protected virtual void UpdateAction() { }
 }

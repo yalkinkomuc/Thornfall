@@ -5,8 +5,10 @@ public abstract class StatusEffect
     protected Unit targetUnit;
     protected int duration;
     public int damagePerTurn;
-    protected Color damageColor;
+    private Color damageColor;
     
+    public bool IsFinished => duration <= 0;
+
     public StatusEffect(Unit target, int duration, int damagePerTurn, Color damageColor)
     {
         this.targetUnit = target;
@@ -24,9 +26,8 @@ public abstract class StatusEffect
     protected virtual void OnTurnStartEffect() { }
 
     public abstract string GetEffectName();
-    public Color GetDamageColor() => damageColor;
     
-    public bool IsFinished => duration <= 0;
+    public Color GetDamageColor() => damageColor;
     
     protected void ReduceDuration()
     {

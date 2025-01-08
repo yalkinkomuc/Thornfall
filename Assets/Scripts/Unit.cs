@@ -165,6 +165,8 @@ public class Unit : MonoBehaviour
 
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
+        if (this == null || !this.isActiveAndEnabled) return;
+        
         if ((IsEnemy() && !TurnSystem.instance.IsPlayerTurn()) || (!IsEnemy() && TurnSystem.instance.IsPlayerTurn()))
         {
             actionPoints = ACTION_POINTS_MAX;
@@ -207,11 +209,11 @@ public class Unit : MonoBehaviour
         Debug.Log("Slm");
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        if (healthSystem != null)
+        if (TurnSystem.instance != null)
         {
-            healthSystem.OnDamageTaken -= HealthSystem_OnDamageTaken;
+            TurnSystem.instance.OnTurnChanged -= TurnSystem_OnTurnChanged;
         }
     }
 

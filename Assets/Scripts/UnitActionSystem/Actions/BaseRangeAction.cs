@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public abstract class BaseRangeAction : BaseAction, ITargetVisualAction
+public abstract class BaseRangeAction : BaseAction
 {
     [Header("Base Range Settings")]
     [SerializeField] protected float range = 8f;
@@ -26,6 +26,8 @@ public abstract class BaseRangeAction : BaseAction, ITargetVisualAction
     
     protected abstract ElementalSpells GetElementalSpell(Unit target);
 
+    private List<ElementalSpells> activeElementalSpells = new List<ElementalSpells>();
+    
     public class OnArrowFiredEventArgs : EventArgs
     {
         public Unit shootingUnit;
@@ -294,10 +296,8 @@ public abstract class BaseRangeAction : BaseAction, ITargetVisualAction
                 {
                     e.targetUnit.AddElementalSpell(elementalSpells);
                 }
-                
-                
-                
-                
+
+              
             }
         }
         finally 

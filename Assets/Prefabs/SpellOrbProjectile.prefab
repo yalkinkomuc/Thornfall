@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8593625527947360212}
-  - component: {fileID: 5634720435762195655}
+  - component: {fileID: 8692151799078867272}
   m_Layer: 0
   m_Name: SpellOrbProjectile
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 1352534703168508656}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5634720435762195655
+--- !u!114 &8692151799078867272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,10 +42,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6614143296733047687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66e1fa4f72b38f47a0b3ecc44c72862, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a6aef177490d9949819d2b301769739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 20
+  fallSpeed: 12
 --- !u!1 &8786399786058881236
 GameObject:
   m_ObjectHideFlags: 0
