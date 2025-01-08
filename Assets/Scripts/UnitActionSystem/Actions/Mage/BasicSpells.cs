@@ -26,6 +26,12 @@ public class BasicSpells : BaseRangeAction
         return damageAmount;
     }
 
+
+    protected override ElementalSpells GetElementalSpell(Unit target)
+    {
+        return new FireSpell(target, damageAmount);
+    }
+
     protected override void Start()
     {
         base.Start();

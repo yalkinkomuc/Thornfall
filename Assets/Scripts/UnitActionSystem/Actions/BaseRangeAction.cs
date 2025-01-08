@@ -23,6 +23,8 @@ public abstract class BaseRangeAction : BaseAction, ITargetVisualAction
     public event EventHandler OnShootAnimStarted;
     public event EventHandler<OnArrowFiredEventArgs> OnArrowFired;
     public event EventHandler OnShootCompleted;
+    
+    protected abstract ElementalSpells GetElementalSpell(Unit target);
 
     public class OnArrowFiredEventArgs : EventArgs
     {
@@ -285,6 +287,17 @@ public abstract class BaseRangeAction : BaseAction, ITargetVisualAction
                 }
 
                 e.targetUnit.Damage(GetDamageAmount());
+                
+                ElementalSpells elementalSpells = GetElementalSpell(targetUnit);
+
+                if (elementalSpells != null)
+                {
+                    e.targetUnit.AddElementalSpell(elementalSpells);
+                }
+                
+                
+                
+                
             }
         }
         finally 

@@ -25,6 +25,11 @@ public class BowRangeAction : BaseRangeAction
         return damageAmount;
     }
 
+    protected override ElementalSpells GetElementalSpell(Unit target)
+    {
+        return null;
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -39,7 +44,7 @@ public class BowRangeAction : BaseRangeAction
 
     private void BowRangeAction_OnShootAnimStarted(object sender, EventArgs e)
     {
-        // Burada gerekirse özel işlemler yapabilirsiniz
+        // Burada gerekirse özel işlemler yapılabilir.
     }
 
     protected override void OnStartAttack()

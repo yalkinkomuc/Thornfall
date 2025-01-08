@@ -44,6 +44,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private GameObject damageTextPrefab; // Unity Inspector'da atanacak
 
     private List<StatusEffect> activeEffects = new List<StatusEffect>();
+    private List<ElementalSpells> activeElementalSpells = new List<ElementalSpells>();
 
     public HealthSystem HealthSystem { get; private set; }
 
@@ -95,6 +96,7 @@ public class Unit : MonoBehaviour
         TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         actionPoints = maxActionPoints;
         healthSystem.OnDead += HealthSystem_OnDead;
+        
     }
 
     #region GetActionField
@@ -201,6 +203,8 @@ public class Unit : MonoBehaviour
     {
         // Artık burada bir şey yapmamıza gerek yok
         // DamageTextAnimation kendi eventini dinliyor
+        
+        Debug.Log("Slm");
     }
 
     private void OnDestroy()
@@ -239,8 +243,18 @@ public class Unit : MonoBehaviour
         activeEffects.Add(effect);
     }
 
+    public void AddElementalSpell(ElementalSpells spell)
+    {
+        activeElementalSpells.Add(spell);
+    }
+
     public bool HasEffect<T>() where T : StatusEffect
     {
         return activeEffects.Any(e => e is T);
+    }
+
+    public bool HasElementalSpell<T>() where T : ElementalSpells
+    {
+        return activeElementalSpells.Any(e => e is T);
     }
 }
