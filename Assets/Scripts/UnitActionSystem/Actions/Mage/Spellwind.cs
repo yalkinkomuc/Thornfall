@@ -1,3 +1,4 @@
+#pragma warning disable CS0114, CS0618, CS0414, CS0067
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -176,8 +177,8 @@ public class SpellWind : BaseRangeAction
         }
 
         // Aktif büyüleri temizle
-        SpellProjectile[] activeSpells = FindObjectsOfType<SpellProjectile>();
-        foreach (SpellProjectile spell in activeSpells)
+        var activeSpells = FindObjectsByType<SpellProjectile>(FindObjectsSortMode.None);
+        foreach (var spell in activeSpells)
         {
             if (spell != null)
             {

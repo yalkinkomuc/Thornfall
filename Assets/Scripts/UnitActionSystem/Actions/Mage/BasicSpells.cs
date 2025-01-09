@@ -1,3 +1,4 @@
+#pragma warning disable CS0414, CS0618, CS0067, CS0114
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -177,8 +178,8 @@ public class BasicSpells : BaseRangeAction
         }
 
         // Aktif büyüleri temizle
-        SpellProjectile[] activeSpells = FindObjectsOfType<SpellProjectile>();
-        foreach (SpellProjectile spell in activeSpells)
+        var activeSpells = FindObjectsByType<SpellProjectile>(FindObjectsSortMode.None);
+        foreach (var spell in activeSpells)
         {
             if (spell != null)
             {
@@ -187,3 +188,4 @@ public class BasicSpells : BaseRangeAction
         }
     }
 }
+#pragma warning restore CS0414, CS0618, CS0067, CS0114

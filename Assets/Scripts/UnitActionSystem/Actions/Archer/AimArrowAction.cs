@@ -1,3 +1,4 @@
+#pragma warning disable CS0114, CS0618, CS0414, CS0067
 using System;
 using UnityEngine;
 using System.Collections.Generic;

@@ -1,3 +1,4 @@
+#pragma warning disable CS0114, CS0618, CS0414, CS0067
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,7 +29,6 @@ public class MoveAction : BaseAction
     private Vector3 lastPosition;
     private float stuckTime = 0f;
     private float stuckThreshold = 0.5f;
-    private float stuckTimer = 0f;
 
     protected override void Awake()
     {
@@ -69,7 +69,6 @@ public class MoveAction : BaseAction
         }
 
         ActionStart(onActionComplete);
-        stuckTimer = 0f;
 
         NavMeshPath path = new NavMeshPath();
         if (agent.CalculatePath(targetPoint, path))
@@ -160,7 +159,6 @@ public class MoveAction : BaseAction
         {
             agent.ResetPath();
             agent.velocity = Vector3.zero;
-            stuckTimer = 0f;
         }
         
         OnStopMoving?.Invoke(this, EventArgs.Empty);

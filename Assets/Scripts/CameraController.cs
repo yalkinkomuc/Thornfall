@@ -1,3 +1,4 @@
+#pragma warning disable CS0114, CS0618, CS0414, CS0067
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -24,7 +25,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        ClampPosition();  // ClampHeight yerine daha kapsamlı bir metod
+        ClampPosition();
     }
 
     private void HandleInput()
