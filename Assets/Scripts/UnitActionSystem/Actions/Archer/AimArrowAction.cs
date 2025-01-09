@@ -17,8 +17,6 @@ public class AimArrowAction : BaseRangeAction
     private int arrowsHitCount = 0;
     private bool hasStartedShooting = false;
 
-    
-
     protected override int MaxTargetCount => maxTargets;
 
     public override string GetActionName() => "Special Arrow";
@@ -58,20 +56,30 @@ public class AimArrowAction : BaseRangeAction
     {
         yield return new WaitForSeconds(0.2f);
 
-        bool isSameTarget = targetUnits.Count > 1 && targetUnits[0] == targetUnits[1];
-        float delayBetweenShots = isSameTarget ? 0.2f : 0f;
+        float delayBetweenShots = 0.2f;
+        bool anyTargetDied = false;
 
-        // Hedefleri güvenli bir şekilde işle
-        var targets = targetUnits.ToList(); // Artık ToList() çalışacak
+        var targets = new List<Unit>(targetUnits);
         foreach (Unit target in targets)
         {
-            if (target != null && target.gameObject != null)
+            if (anyTargetDied || (targetUnits.Count > 0 && !targetUnits[0].gameObject.activeInHierarchy))
+            {
+                break;
+            }
+
+            if (target != null && target.gameObject != null && target.gameObject.activeInHierarchy)
             {
                 SpawnAndShootArrow(target);
                 yield return new WaitForSeconds(delayBetweenShots);
             }
         }
         allArrowsShot = true;
+
+        yield return new WaitForSeconds(0.5f);
+        if (!anyTargetDied)
+        {
+            CompleteAction();
+        }
     }
 
     protected internal override void SpawnAndShootArrow(Unit target)
@@ -88,7 +96,7 @@ public class AimArrowAction : BaseRangeAction
     {
         try 
         {
-            if (e.targetUnit != null)
+            if (e.targetUnit != null && e.targetUnit.gameObject.activeInHierarchy)
             {
                 BaseRangeAction targetRangeAction = e.targetUnit.GetComponent<BaseRangeAction>();
                 if (targetRangeAction != null)
@@ -97,17 +105,21 @@ public class AimArrowAction : BaseRangeAction
                 }
 
                 e.targetUnit.Damage(GetDamageAmount());
+
+                if (!e.targetUnit.gameObject.activeInHierarchy)
+                {
+                    CompleteAction();
+                }
             }
         }
         finally 
         {
-            ((ArrowProjectile)sender).OnArrowHit -= ArrowProjectile_OnHit;
-            arrowsHitCount++;
-
-            if (allArrowsShot && arrowsHitCount >= targetUnits.Count)
+            if (sender is ArrowProjectile projectile)
             {
-                CompleteAction();
+                projectile.OnArrowHit -= ArrowProjectile_OnHit;
             }
+            
+            arrowsHitCount++;
         }
     }
 
@@ -192,18 +204,21 @@ public class AimArrowAction : BaseRangeAction
 
     public override void CompleteAction()
     {
+        StopAllCoroutines();
+        
         animator.ResetTrigger("Shoot");
         allArrowsShot = false;
         arrowsHitCount = 0;
         hasShot = false;
         hasStartedShooting = false;
         isAttacking = false;
+        currentTargetIndex = 0;
         
+        targetUnits.Clear();
         OnTargetListChanged?.Invoke(this, new OnTargetListChangedEventArgs { currentTargetCount = 0 });
+        InvokeOnShootCompleted();
         
-        UnitActionSystem.Instance.RefreshActionVisuals();
-        
-        base.CompleteAction();
+        ActionComplete();
     }
 
     public override void CancelAction()
@@ -214,26 +229,24 @@ public class AimArrowAction : BaseRangeAction
         hasShot = false;
         hasStartedShooting = false;
         isAttacking = false;
+        currentTargetIndex = 0;
+        targetUnits.Clear();
         
         OnTargetListChanged?.Invoke(this, new OnTargetListChangedEventArgs { currentTargetCount = 0 });
+        InvokeOnShootCompleted();
         
-        UnitActionSystem.Instance.RefreshActionVisuals();
-        
-        base.CancelAction();
+        ActionComplete();
     }
 
     public override bool ShouldShowTargetVisual(Unit targetUnit)
     {
-        // Eğer unit zaten hedef listesindeyse her zaman göster
         if (targetUnits.Contains(targetUnit))
         {
             return true;
         }
 
-        // Değilse base class'ın kontrolünü yap (mouse üzerinde ve menzilde mi?)
         if (!base.ShouldShowTargetVisual(targetUnit)) return false;
 
-        // Eğer maksimum hedef sayısına ulaşılmadıysa ve geçerli bir hedefse göster
         if (targetUnits.Count < MaxTargetCount)
         {
             List<Unit> validTargets = GetValidTargetListWithSphere(range);

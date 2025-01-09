@@ -400,12 +400,21 @@ public abstract class BaseRangeAction : BaseAction
         ActionComplete();
     }
 
-    protected void InvokeOnShootAnimStarted()
+    protected virtual void InvokeOnShootAnimStarted()
     {
         OnShootAnimStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    protected void InvokeOnShootCompleted()
+    protected virtual void InvokeOnArrowFired(Unit target)
+    {
+        OnArrowFired?.Invoke(this, new OnArrowFiredEventArgs 
+        { 
+            shootingUnit = unit,
+            targetUnit = target 
+        });
+    }
+
+    protected virtual void InvokeOnShootCompleted()
     {
         OnShootCompleted?.Invoke(this, EventArgs.Empty);
     }

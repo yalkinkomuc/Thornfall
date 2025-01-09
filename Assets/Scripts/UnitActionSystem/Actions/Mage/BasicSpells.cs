@@ -31,6 +31,12 @@ public class BasicSpells : BaseRangeAction
     };
 
 
+    public override string GetActionName() => "Basic Spells";
+    public override int GetActionPointsCost() => actionPointsCost;
+    public override int GetDamageAmount() => baseDamage;
+
+
+
  protected override void Start()
     {
         base.Start();
@@ -145,9 +151,7 @@ public class BasicSpells : BaseRangeAction
         animator.SetTrigger("Shoot");
     }
 
-    public override string GetActionName() => "Basic Spells";
-    public override int GetActionPointsCost() => actionPointsCost;
-    public override int GetDamageAmount() => baseDamage;
+    
     
 
     private Unit GetValidTarget(float range)
