@@ -376,6 +376,7 @@ public abstract class BaseRangeAction : BaseAction
     public virtual void CompleteAction()
     {
         animator.ResetTrigger("Shoot");
+        animator.ResetTrigger("ShootHorizontal");
         hasShot = false;
         isArrowHit = false;
         isAttacking = false;
@@ -388,6 +389,7 @@ public abstract class BaseRangeAction : BaseAction
     public virtual void CancelAction()
     {
         animator.ResetTrigger("Shoot");
+        animator.ResetTrigger("ShootHorizontal");
         isAttacking = false;
         hasShot = false;
         isArrowHit = true;
@@ -400,5 +402,10 @@ public abstract class BaseRangeAction : BaseAction
     protected void InvokeOnShootAnimStarted()
     {
         OnShootAnimStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void InvokeOnShootCompleted()
+    {
+        OnShootCompleted?.Invoke(this, EventArgs.Empty);
     }
 } 

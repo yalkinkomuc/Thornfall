@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7016631424573781062}
   - component: {fileID: 746107102905869073}
   - component: {fileID: 9007376581417539132}
+  - component: {fileID: 78218493778285795}
   m_Layer: 8
   m_Name: F_Mage
   m_TagString: Untagged
@@ -189,7 +190,35 @@ MonoBehaviour:
   shootPointTransform: {fileID: 2241914567728482983}
   arrowProjectilePrefab: {fileID: 6614143296733047687, guid: c4d88947745eeae4495bc23687f3c2ac, type: 3}
   actionPointsCost: 2
-  damageAmount: 10
+  baseDamage: 15
+  spellHeight: 10
+  spellProjectilePrefab: {fileID: 6614143296733047687, guid: c4d88947745eeae4495bc23687f3c2ac, type: 3}
+  spellType: 1
+--- !u!114 &78218493778285795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449169168124733756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd2afa29e893a3144950037dcde01d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsUnit:
+    serializedVersion: 2
+    m_Bits: 256
+  isDefaultCombatAction: 0
+  range: 50
+  aimDuration: 1
+  rotationSpeed: 10
+  shootPointTransform: {fileID: 2241914567728482983}
+  arrowProjectilePrefab: {fileID: 6614143296733047687, guid: 5dd55d818f9fed640b9c335e9c955a3f, type: 3}
+  actionPointsCost: 2
+  baseDamage: 12
+  spellProjectilePrefab: {fileID: 6614143296733047687, guid: 5dd55d818f9fed640b9c335e9c955a3f, type: 3}
+  spellType: 0
 --- !u!1 &1208974049198402820
 GameObject:
   m_ObjectHideFlags: 0

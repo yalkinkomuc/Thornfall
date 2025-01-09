@@ -24,6 +24,12 @@ public class UnitAnimator : MonoBehaviour
             aimArrowAction.OnShootAnimStarted += AimArrowAction_OnShootAnimStarted;
             aimArrowAction.OnShootCompleted += AimArrowAction_OnShootCompleted;
         }
+
+        if (TryGetComponent<SpellWind>(out SpellWind spellWind))
+        {
+            spellWind.OnShootAnimStarted += SpellWind_OnShootAnimStarted;
+            spellWind.OnShootCompleted += SpellWind_OnShootCompleted;
+        }
     }
 
     private void OnDestroy()
@@ -38,6 +44,12 @@ public class UnitAnimator : MonoBehaviour
         {
             aimArrowAction.OnShootAnimStarted -= AimArrowAction_OnShootAnimStarted;
             aimArrowAction.OnShootCompleted -= AimArrowAction_OnShootCompleted;
+        }
+
+        if (TryGetComponent<SpellWind>(out SpellWind spellWind))
+        {
+            spellWind.OnShootAnimStarted -= SpellWind_OnShootAnimStarted;
+            spellWind.OnShootCompleted -= SpellWind_OnShootCompleted;
         }
     }
 
@@ -83,5 +95,14 @@ public class UnitAnimator : MonoBehaviour
         animator.ResetTrigger("Shoot");
     }
 
+    private void SpellWind_OnShootAnimStarted(object sender, EventArgs e)
+    {
+        animator.SetTrigger("ShootHorizontal");
+    }
+    
+    private void SpellWind_OnShootCompleted(object sender, EventArgs e)
+    {
+        animator.ResetTrigger("ShootHorizontal");
+    }
 
 }

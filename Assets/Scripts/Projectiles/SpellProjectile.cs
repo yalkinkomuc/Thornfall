@@ -62,6 +62,9 @@ public class SpellProjectile : MonoBehaviour
             spellEffect = spellEffect
         });
 
+        // Projectile çarptığında busy'i temizle
+        UnitActionSystem.Instance.ClearBusy();
+
         Destroy(gameObject);
     }
 } 

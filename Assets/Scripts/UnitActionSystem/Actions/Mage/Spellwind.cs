@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicSpells : BaseRangeAction
+public class SpellWind : BaseRangeAction
 {
-    [Header("Vertical Spell Settings")]
+    [Header("Horizontal Spell Settings")]
     [SerializeField] private int actionPointsCost = 2;
-    [SerializeField] private int baseDamage = 15;
-    [SerializeField] private float spellHeight = 10f;
+    [SerializeField] private int baseDamage = 12;
     [SerializeField] private GameObject spellProjectilePrefab;
-    [SerializeField] private DamageType spellType = DamageType.Fire;
+    [SerializeField] private DamageType spellType = DamageType.Ice;
 
     private static readonly Dictionary<DamageType, Color> damageColors = new Dictionary<DamageType, Color>()
     {
@@ -65,10 +64,10 @@ public class BasicSpells : BaseRangeAction
     {
         if (hasShot) return;
 
-        if (targetUnit != null)
+        if (shootPointTransform != null && targetUnit != null)
         {
-            Vector3 spawnPosition = targetUnit.transform.position + Vector3.up * spellHeight;
-            GameObject spellObject = Instantiate(spellProjectilePrefab, spawnPosition, Quaternion.identity);
+            Vector3 spawnPosition = shootPointTransform.position;
+            GameObject spellObject = Instantiate(spellProjectilePrefab, spawnPosition, transform.rotation);
             SpellProjectile spellProjectile = spellObject.GetComponent<SpellProjectile>();
 
             if (spellProjectile != null)
@@ -76,12 +75,13 @@ public class BasicSpells : BaseRangeAction
                 SpellEffect effect = new SpellEffect(
                     spellType,
                     baseDamage,
-                    3,
+                    1,
                     damageColors[spellType],
                     effectDescriptions[spellType]
                 );
 
-                spellProjectile.Setup(targetUnit.transform.position, targetUnit, effect);
+                Vector3 targetPos = targetUnit.transform.position;
+                spellProjectile.Setup(targetPos, targetUnit, effect);
                 spellProjectile.OnSpellHit += SpellProjectile_OnHit;
             }
         }
@@ -125,7 +125,9 @@ public class BasicSpells : BaseRangeAction
         isAttacking = true;
         hasShot = false;
 
+        // Busy state'i set et
         UnitActionSystem.Instance.SetBusy();
+        // Action başladı event'ini tetikle
         UnitActionSystem.Instance.InvokeActionStarted();
 
         OnStartAttack();
@@ -133,10 +135,10 @@ public class BasicSpells : BaseRangeAction
 
     protected override void OnStartAttack()
     {
-        animator.SetTrigger("Shoot");
+        animator.SetTrigger("ShootHorizontal");
     }
 
-    public override string GetActionName() => "Basic Spells";
+    public override string GetActionName() => "Spellwind";
     public override int GetActionPointsCost() => actionPointsCost;
     public override int GetDamageAmount() => baseDamage;
     
