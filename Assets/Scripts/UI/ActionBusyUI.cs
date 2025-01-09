@@ -10,7 +10,13 @@ public class ActionBusyUI : MonoBehaviour
         HideActionBusyImage();
     }
 
-   
+    private void OnDestroy()
+    {
+        if (UnitActionSystem.Instance != null)
+        {
+            UnitActionSystem.Instance.OnBusyChanged -= UnitActionSystem_onBusyChanged;
+        }
+    }
 
     private void ShowActionBusyImage()
     {

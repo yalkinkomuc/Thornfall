@@ -91,15 +91,26 @@ public class SpellWind : BaseRangeAction
 
     private void SpellProjectile_OnHit(object sender, SpellProjectile.OnSpellHitEventArgs e)
     {
+        var projectile = sender as SpellProjectile;
+
         if (e.targetUnit != null)
         {
+            if (!unit.TrySpendActionPointsToTakeAction(this))
+            {
+                if (projectile != null)
+                {
+                    projectile.OnSpellHit -= SpellProjectile_OnHit;
+                }
+                ActionComplete();
+                return;
+            }
+
             e.targetUnit.Damage(e.spellEffect.CalculateDamage());
         }
 
-        SpellProjectile spellProjectile = sender as SpellProjectile;
-        if (spellProjectile != null)
+        if (projectile != null)
         {
-            spellProjectile.OnSpellHit -= SpellProjectile_OnHit;
+            projectile.OnSpellHit -= SpellProjectile_OnHit;
         }
 
         ActionComplete();
@@ -114,20 +125,14 @@ public class SpellWind : BaseRangeAction
             return;
         }
 
-        if (!unit.TrySpendActionPointsToTakeAction(this))
-        {
-            return;
-        }
-
+        // Action point kontrolünü kaldırdık
         ActionStart(onActionComplete);
         state = State.Aiming;
         stateTimer = aimDuration;
         isAttacking = true;
         hasShot = false;
 
-        // Busy state'i set et
         UnitActionSystem.Instance.SetBusy();
-        // Action başladı event'ini tetikle
         UnitActionSystem.Instance.InvokeActionStarted();
 
         OnStartAttack();

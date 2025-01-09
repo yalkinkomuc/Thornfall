@@ -91,17 +91,30 @@ public class BasicSpells : BaseRangeAction
 
     private void SpellProjectile_OnHit(object sender, SpellProjectile.OnSpellHitEventArgs e)
     {
+        var projectile = sender as SpellProjectile;
+
         if (e.targetUnit != null)
         {
+            if (!unit.TrySpendActionPointsToTakeAction(this))
+            {
+                if (projectile != null)
+                {
+                    projectile.OnSpellHit -= SpellProjectile_OnHit;
+                }
+                UnitActionSystem.Instance.ClearBusy();
+                ActionComplete();
+                return;
+            }
+
             e.targetUnit.Damage(e.spellEffect.CalculateDamage());
         }
 
-        SpellProjectile spellProjectile = sender as SpellProjectile;
-        if (spellProjectile != null)
+        if (projectile != null)
         {
-            spellProjectile.OnSpellHit -= SpellProjectile_OnHit;
+            projectile.OnSpellHit -= SpellProjectile_OnHit;
         }
 
+        UnitActionSystem.Instance.ClearBusy();
         ActionComplete();
     }
 
@@ -111,11 +124,6 @@ public class BasicSpells : BaseRangeAction
         if (targetUnit == null)
         {
             onActionComplete?.Invoke();
-            return;
-        }
-
-        if (!unit.TrySpendActionPointsToTakeAction(this))
-        {
             return;
         }
 
