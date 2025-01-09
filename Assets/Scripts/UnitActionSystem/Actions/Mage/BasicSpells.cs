@@ -192,5 +192,14 @@ public class BasicSpells : BaseRangeAction
             }
         }
     }
+
+    public override bool ShouldShowTargetVisual(Unit targetUnit)
+    {
+        // Sadece mesafe ve düşman kontrolü yap
+        return targetUnit != null && 
+               targetUnit.IsEnemy() && 
+               
+               Vector3.Distance(unit.transform.position, targetUnit.transform.position) <= range;
+    }
 }
 #pragma warning restore CS0414, CS0618, CS0067, CS0114

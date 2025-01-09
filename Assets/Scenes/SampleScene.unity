@@ -657,6 +657,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f2ee7d2ed1f424a47a67bd0dbe5ceb84, type: 2}
+    - target: {fileID: 1492721841236850015, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
+      propertyPath: aimDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2843207020710791702, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 91.22778
@@ -720,6 +724,10 @@ PrefabInstance:
     - target: {fileID: 6690582999288276869, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
       propertyPath: maxTargets
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6690582999288276869, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
+      propertyPath: aimDuration
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6961087343483706131, guid: cf9897a2481f4914a8e2075389cb90a9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -2644,7 +2652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -24.303734
+      value: -9.303734
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2652,7 +2660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.691444
+      value: -35.39144
       objectReference: {fileID: 0}
     - target: {fileID: 8446268924472988794, guid: 0d8d66cb526c5804c8b30d03c050fcd4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2933,13 +2941,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 78218493778285795, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
+      propertyPath: spellType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 449169168124733756, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_Name
       value: Unit_Mage_F
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 91.408676
+      value: 93.508675
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2947,7 +2959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 114.7882
+      value: 72.4882
       objectReference: {fileID: 0}
     - target: {fileID: 3946185065190139615, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2977,14 +2989,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9007376581417539132, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
-      propertyPath: damageAmount
+    - target: {fileID: 6726126694582777020, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
+      propertyPath: actionPoints
       value: 1000
       objectReference: {fileID: 0}
-    - target: {fileID: 9007376581417539132, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
-      propertyPath: spellProjectilePrefab
-      value: 
-      objectReference: {fileID: 6614143296733047687, guid: c4d88947745eeae4495bc23687f3c2ac, type: 3}
+    - target: {fileID: 6726126694582777020, guid: aecd9acdc898e8e4aad94c1f89a88d29, type: 3}
+      propertyPath: maxActionPoints
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

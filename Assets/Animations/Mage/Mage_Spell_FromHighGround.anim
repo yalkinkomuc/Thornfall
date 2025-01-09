@@ -77572,7 +77572,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 2
+  - time: 2.3
     functionName: AttackComplete
     data: 
     objectReferenceParameter: {fileID: 0}
