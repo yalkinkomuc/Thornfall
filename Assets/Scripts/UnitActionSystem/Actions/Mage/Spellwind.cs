@@ -158,7 +158,16 @@ public class SpellWind : BaseRangeAction
             {
                 if (targetUnit.IsEnemy() && Vector3.Distance(unit.transform.position, targetUnit.transform.position) <= range)
                 {
-                    return targetUnit;
+                    // Görüş hattı kontrolü ekle
+                    Vector3 directionToTarget = (targetUnit.transform.position - transform.position).normalized;
+                    if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit visionHit, range))
+                    {
+                        // İlk çarpılan obje hedef ise, görüş hattı açık demektir
+                        if (visionHit.collider.gameObject == targetUnit.gameObject)
+                        {
+                            return targetUnit;
+                        }
+                    }
                 }
             }
         }

@@ -155,11 +155,16 @@ public class BasicSpells : BaseRangeAction
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.TryGetComponent<Unit>(out Unit targetUnit))
+            // Tıklanan noktanın etrafındaki birimleri kontrol et
+            var colliders = Physics.OverlapSphere(hit.point, 1f);
+            foreach (var collider in colliders)
             {
-                if (targetUnit.IsEnemy() && Vector3.Distance(unit.transform.position, targetUnit.transform.position) <= range)
+                if (collider.TryGetComponent<Unit>(out Unit targetUnit))
                 {
-                    return targetUnit;
+                    if (targetUnit.IsEnemy() && Vector3.Distance(unit.transform.position, targetUnit.transform.position) <= range)
+                    {
+                        return targetUnit;
+                    }
                 }
             }
         }
