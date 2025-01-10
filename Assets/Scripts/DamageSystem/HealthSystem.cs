@@ -24,7 +24,13 @@ public class HealthSystem : MonoBehaviour
 
     public void Damage(DamageData damageData)
     {
+        int previousHealth = health;
         health -= damageData.amount;
+        
+        OnDamageTaken?.Invoke(this, new OnDamageTakenEventArgs { 
+            damageAmount = damageData.amount,
+            targetUnit = GetComponent<Unit>()
+        });
         
         if (damageData.showDamageText)
         {
@@ -45,13 +51,6 @@ public class HealthSystem : MonoBehaviour
 
     private void Die()
     {
-        WorldUI_DamageTextAnimation damageText = GetComponentInChildren<WorldUI_DamageTextAnimation>();
-        if (damageText != null)
-        {
-            damageText.transform.SetParent(null, worldPositionStays: false);
-            Destroy(damageText.gameObject, 2f);
-        }
-
         OnDead?.Invoke(this, EventArgs.Empty);
     }
 
@@ -62,7 +61,16 @@ public class HealthSystem : MonoBehaviour
 
     public void Heal(int healAmount)
     {
+        int previousHealth = health;
         health = Mathf.Min(health + healAmount, maxHealth);
+        
+        if (health != previousHealth)
+        {
+            OnDamageTaken?.Invoke(this, new OnDamageTakenEventArgs {
+                damageAmount = -(health - previousHealth),
+                targetUnit = GetComponent<Unit>()
+            });
+        }
     }
 
     public void DamageWithoutText(int damageAmount)
