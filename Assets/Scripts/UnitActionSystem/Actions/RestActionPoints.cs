@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class RestActionPoints : BaseAction, ITargetVisualAction
 {
     [SerializeField] private int actionPointCost = 2;
-    [SerializeField] private float restRange = 4f; // Etki menzili
+    [SerializeField] private float restRange = 4f;
     private bool isUsedThisTurn = false;
-    private Unit targetUnit; // Yenilenecek ally unit
+    private Unit targetUnit;
 
     protected override void Start()
     {
@@ -15,14 +15,27 @@ public class RestActionPoints : BaseAction, ITargetVisualAction
         TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
     }
 
+    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+    {
+        isUsedThisTurn = false;
+        targetUnit = null;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (TurnSystem.instance != null)
+        {
+            TurnSystem.instance.OnTurnChanged -= TurnSystem_OnTurnChanged;
+        }
+    }
+
     public override void TakeAction(Vector3 targetPosition, Action onActionComplete)
     {
-        // Action'ı en başta başlat ki onActionComplete null olmasın
         ActionStart(onActionComplete);
 
-        // Mouse ile seçilen pozisyonda bir ally unit bul
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit))
         {
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit clickedUnit))
             {
@@ -43,11 +56,12 @@ public class RestActionPoints : BaseAction, ITargetVisualAction
             return;
         }
 
-        // Hedef unit'in action point'lerini yenile
         targetUnit.ResetActionPoints();
         isUsedThisTurn = true;
-
+        
+        UnitActionSystem.Instance.RefreshSelectedAction();
         ActionComplete();
+        UnitActionSystem.Instance.SetSelectedAction(unit.GetMoveAction());
     }
 
     public override List<Unit> GetValidTargetListWithSphere(float radius)
@@ -98,21 +112,6 @@ public class RestActionPoints : BaseAction, ITargetVisualAction
     public override string GetActionName()
     {
         return "Rest Ally";
-    }
-
-    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
-    {
-        isUsedThisTurn = false;
-        targetUnit = null;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        if (TurnSystem.instance != null)
-        {
-            TurnSystem.instance.OnTurnChanged -= TurnSystem_OnTurnChanged;
-        }
     }
 
     public bool IsUsedThisTurn()

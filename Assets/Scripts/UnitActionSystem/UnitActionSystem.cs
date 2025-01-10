@@ -459,4 +459,9 @@ public class UnitActionSystem : MonoBehaviour
    {
       OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
    }
+
+   public void RefreshSelectedAction()
+   {
+      OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
+   }
 }

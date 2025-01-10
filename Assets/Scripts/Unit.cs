@@ -49,6 +49,8 @@ public class Unit : MonoBehaviour
 
     public HealthSystem HealthSystem { get; private set; }
 
+    public event System.Action OnActionPointsRestored;
+
     private void Awake()
     {
         HealthSystem = GetComponent<HealthSystem>();
@@ -97,6 +99,8 @@ public class Unit : MonoBehaviour
         TurnSystem.instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         actionPoints = maxActionPoints;
         healthSystem.OnDead += HealthSystem_OnDead;
+
+        
         
     }
 
@@ -151,8 +155,8 @@ public class Unit : MonoBehaviour
     public void ResetActionPoints()
     {
         actionPoints = maxActionPoints;
-
-        Debug.Log("Action Points Reset");
+        OnActionPointsRestored?.Invoke();
+        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public BaseAction[] GetActions()
