@@ -184,9 +184,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 0
-  actionPointCost: 2
-  restRange: 20
-  restEffectPrefab: {fileID: 7155335147208632822, guid: 34473da2e7826bd4297949297d2b8019, type: 3}
+  blessRange: 50
+  blessEffectPrefab: {fileID: 7155335147208632822, guid: 34473da2e7826bd4297949297d2b8019, type: 3}
 --- !u!114 &8959377516082688835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,10 +202,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   isDefaultCombatAction: 0
-  actionPointCost: 2
+  blessRange: 50
+  blessEffectPrefab: {fileID: 9017484664307500583, guid: 0fe97b66a01594b4b95133df2064c91c, type: 3}
   healAmount: 25
-  healRange: 50
-  healEffectPrefab: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}
 --- !u!1 &8755897566691268416
 GameObject:
   m_ObjectHideFlags: 0
