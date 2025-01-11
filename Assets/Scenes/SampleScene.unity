@@ -3914,6 +3914,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit_Enchanter_M
       objectReference: {fileID: 0}
+    - target: {fileID: 7226386778401487435, guid: 9b8c5a7b54198f2478bb2ca893a37b15, type: 3}
+      propertyPath: restEffectPrefab
+      value: 
+      objectReference: {fileID: 7155335147208632822, guid: 34473da2e7826bd4297949297d2b8019, type: 3}
+    - target: {fileID: 8959377516082688835, guid: 9b8c5a7b54198f2478bb2ca893a37b15, type: 3}
+      propertyPath: healEffectPrefab
+      value: 
+      objectReference: {fileID: 9017484664307500583, guid: 0fe97b66a01594b4b95133df2064c91c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

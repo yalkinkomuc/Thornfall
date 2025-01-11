@@ -164,6 +164,32 @@ public class UnitActionSystem : MonoBehaviour
          return;
       }
 
+      // BaseBlessAction için özel kontrol (HealAction ve RestActionPoints için)
+      if (selectedAction is BaseBlessAction)
+      {
+         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
+         {
+            if (raycastHit.transform.TryGetComponent<Unit>(out Unit targetUnit))
+            {
+               // Sadece aynı takımdaki unitler için işlem yap
+               if (selectedUnit.teamID == targetUnit.teamID && targetUnit != selectedUnit)
+               {
+                  // Action point kontrolü ekle
+                  if (!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+                  {
+                     return;
+                  }
+
+                  SetBusy();
+                  selectedAction.TakeAction(MouseWorld.GetMouseWorldPosition(), ClearBusy);
+                  OnActionStarted?.Invoke(this, EventArgs.Empty);
+               }
+            }
+         }
+         return;
+      }
+
       // Range action kontrolü
       if (selectedAction is BaseRangeAction baseRangeAction)
       {
