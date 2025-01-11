@@ -17,4 +17,9 @@ public class HealAction : BaseBlessAction
     }
 
     public override string GetActionName() => "Heal";
+
+    public override int GetActionPointsCost()
+    {
+        return 5;
+    }
 }

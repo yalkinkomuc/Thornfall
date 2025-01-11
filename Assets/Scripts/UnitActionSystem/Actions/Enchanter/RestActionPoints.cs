@@ -45,4 +45,9 @@ public class RestActionPoints : BaseBlessAction
     {
         return isUsedThisTurn;
     }
+
+    public override int GetActionPointsCost()
+    {
+        return 5;
+    }
 } 
