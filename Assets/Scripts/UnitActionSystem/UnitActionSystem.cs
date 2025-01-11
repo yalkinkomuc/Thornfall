@@ -239,49 +239,40 @@ public class UnitActionSystem : MonoBehaviour
    
    private bool TryHandleUnitSelection()
    {
-      if (Input.GetMouseButtonDown(0))
+      // Eğer heal action seçiliyse unit seçimine izin verme
+      if (selectedAction is HealAction)
       {
-         // Eğer Rest Ally action seçiliyse unit seçimine izin verme
-         if (selectedAction is RestActionPoints)
-         {
-            return false;
-         }
+         return false;
+      }
 
-         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
-         {
-            Debug.Log($"Hit object: {raycastHit.transform.name}"); // Debug için
+      
+      if (selectedAction is RestActionPoints)
+      {
+         return false;
+      }
 
-            if (raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+      if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, unitLayerMask))
+      {
+         if (raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
+         {
+            if (unit == selectedUnit)
             {
-               Debug.Log($"Found Unit component: {unit.name}"); // Debug için
-
-               if (unit == selectedUnit)
-               {
-                  Debug.Log("Unit already selected"); // Debug için
-                  return false;
-               }
-
-               if (unit.IsEnemy())
-               {
-                  Debug.Log("Unit is enemy"); // Debug için
-                  return false;
-               }
-               
-               SetSelectedUnit(unit);
-               return true;
+               // Aynı unit'e tıklandı
+               return false;
             }
-            else
+
+            if (unit.IsEnemy())
             {
-               Debug.Log("No Unit component found"); // Debug için
+               // Düşman unit'e tıklandı
+               return false;
             }
-         }
-         else
-         {
-            Debug.Log($"No hit with layer mask: {unitLayerMask.value}"); // Debug için
+
+            SetSelectedUnit(unit);
+            return true;
          }
       }
-      
+
       return false;
    }
 

@@ -7,6 +7,7 @@ public class AnimationEventHandler : MonoBehaviour
     public event EventHandler OnReloadCompleted;
     public event EventHandler OnMeleeHit;
     public event EventHandler OnAimShot;
+    public event EventHandler OnBlessEffectTriggered;
 
     // Animation Event'ler tarafından çağrılacak methodlar
     public void AttackComplete()
@@ -30,5 +31,11 @@ public class AnimationEventHandler : MonoBehaviour
     public void AimShot()
     {
         OnAimShot?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void BlessEffect()
+    {
+        Debug.Log("Bless Effect Event Triggered");
+        OnBlessEffectTriggered?.Invoke(this, EventArgs.Empty);
     }
 } 

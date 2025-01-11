@@ -257,5 +257,24 @@ public class Unit : MonoBehaviour
         return activeEffects.Any(e => e is T);
     }
 
-    
+    public void Heal(int healAmount)
+    {
+        Debug.Log($"Unit Heal çağrıldı: {gameObject.name}, Heal Amount: {healAmount}");
+        
+        if (healthSystem != null)
+        {
+            healthSystem.Heal(healAmount);
+            
+            Debug.Log("Heal text gösteriliyor");
+            UIManager.Instance.ShowDamageText(
+                transform.position + Vector3.up * 2f, 
+                healAmount, 
+                Color.green
+            );
+        }
+        else
+        {
+            Debug.LogError($"HealthSystem null: {gameObject.name}");
+        }
+    }
 }

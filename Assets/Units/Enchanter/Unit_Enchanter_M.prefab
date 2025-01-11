@@ -1,80 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2656392827202868759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4599329103341291956}
-  - component: {fileID: 5687204378798901156}
-  - component: {fileID: 349691140018038971}
-  m_Layer: 8
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &4599329103341291956
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2656392827202868759}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7493814544090850519}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.5999999}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5687204378798901156
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2656392827202868759}
-  m_CullTransparentMesh: 1
---- !u!114 &349691140018038971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2656392827202868759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5141325109471082748
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +17,7 @@ GameObject:
   - component: {fileID: 3049488769205701027}
   - component: {fileID: 6028245934575729417}
   - component: {fileID: 7226386778401487435}
+  - component: {fileID: 8959377516082688835}
   m_Layer: 8
   m_Name: Unit_Enchanter_M
   m_TagString: Untagged
@@ -175,8 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891041bc7aef64fbc1a7e02630f2cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ragdollPrefab: {fileID: 0}
-  originalRootBone: {fileID: 0}
+  ragdollPrefab: {fileID: 389830392467193727, guid: f256920934b697e45bbb4a6e63265814, type: 3}
+  originalRootBone: {fileID: 7563396610282088750}
 --- !u!65 &3795245944940443260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -260,6 +186,27 @@ MonoBehaviour:
   isDefaultCombatAction: 0
   actionPointCost: 2
   restRange: 20
+  restEffectPrefab: {fileID: 7155335147208632822, guid: 34473da2e7826bd4297949297d2b8019, type: 3}
+--- !u!114 &8959377516082688835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141325109471082748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f471ec2779eb84395fd0cc1aad5daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whatIsUnit:
+    serializedVersion: 2
+    m_Bits: 256
+  isDefaultCombatAction: 0
+  actionPointCost: 2
+  healAmount: 25
+  healRange: 50
+  healEffectPrefab: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}
 --- !u!1 &8755897566691268416
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,10 +430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6351535791635680666, guid: 1be8537055c7b5048952a23730e84c45, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 4599329103341291956}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1be8537055c7b5048952a23730e84c45, type: 3}
 --- !u!224 &7493814544090850519 stripped
@@ -1324,6 +1268,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba70b3f661b4cb243805af994575812a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &7563396610282088750 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8995720166648014158, guid: 0f8f443cea0774f4fbac76192c5d17e8, type: 3}
+  m_PrefabInstance: {fileID: 7772752328098149276}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7806115236676375671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0f8f443cea0774f4fbac76192c5d17e8, type: 3}
